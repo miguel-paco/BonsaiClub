@@ -247,10 +247,10 @@
               </PropertyMappings>
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.DrawCircle.bonsai">
-              <LocationX>0.4268429</LocationX>
-              <LocationY>-0.601201952</LocationY>
+              <LocationX>-0.83590585</LocationX>
+              <LocationY>-0.14448379</LocationY>
               <Layer>0</Layer>
-              <Diameter>1</Diameter>
+              <Diameter>0.52447176</Diameter>
               <ColorR>0</ColorR>
               <ColorG>0</ColorG>
               <ColorB>0</ColorB>
@@ -527,8 +527,8 @@
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="cv:CreatePoint2f">
-                      <cv:X>0.427046835</cv:X>
-                      <cv:Y>-0.604458034</cv:Y>
+                      <cv:X>-0.83590585</cv:X>
+                      <cv:Y>-0.14448379</cv:Y>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="WorkflowOutput" />
@@ -679,6 +679,38 @@ def process(value):
             <Expression xsi:type="SubscribeSubject">
               <Name>MyMatrix</Name>
             </Expression>
+            <Expression xsi:type="Disable">
+              <Builder xsi:type="scr:ExpressionTransform">
+                <scr:Expression>it[0][0]</scr:Expression>
+              </Builder>
+            </Expression>
+            <Expression xsi:type="Disable">
+              <Builder xsi:type="Combinator">
+                <Combinator xsi:type="DoubleProperty">
+                  <Value>5.5</Value>
+                </Combinator>
+              </Builder>
+            </Expression>
+            <Expression xsi:type="Disable">
+              <Builder xsi:type="Combinator">
+                <Combinator xsi:type="rx:Zip" />
+              </Builder>
+            </Expression>
+            <Expression xsi:type="Disable">
+              <Builder xsi:type="Multiply" />
+            </Expression>
+            <Expression xsi:type="scr:ExpressionTransform">
+              <scr:Expression>it[0][2]</scr:Expression>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="p2:TransformScriptfloatdemo" />
+            </Expression>
+            <Expression xsi:type="scr:ExpressionTransform">
+              <scr:Expression>it[2][2]</scr:Expression>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="p2:TransformScriptfloatdemo" />
+            </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="DoubleProperty">
                 <Value>5.5</Value>
@@ -701,10 +733,18 @@ def process(value):
             <Edge From="1" To="2" Label="Source1" />
             <Edge From="2" To="3" Label="Source1" />
             <Edge From="3" To="4" Label="Source1" />
-            <Edge From="5" To="8" Label="Source3" />
+            <Edge From="5" To="6" Label="Source1" />
+            <Edge From="5" To="10" Label="Source1" />
+            <Edge From="5" To="12" Label="Source1" />
+            <Edge From="5" To="16" Label="Source3" />
             <Edge From="6" To="8" Label="Source1" />
             <Edge From="7" To="8" Label="Source2" />
             <Edge From="8" To="9" Label="Source1" />
+            <Edge From="10" To="11" Label="Source1" />
+            <Edge From="12" To="13" Label="Source1" />
+            <Edge From="14" To="16" Label="Source1" />
+            <Edge From="15" To="16" Label="Source2" />
+            <Edge From="16" To="17" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
