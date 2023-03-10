@@ -105,7 +105,7 @@
           <Nodes>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="cv:FileCapture">
-                <cv:FileName>E:\Miguel\Experiments\StraightVanish\20210824\2_VanishStraight20mms200ms__1\Cam1_1.avi</cv:FileName>
+                <cv:FileName>..\resources\VRData\Cam1_2.avi</cv:FileName>
                 <cv:PlaybackRate>85</cv:PlaybackRate>
                 <cv:StartPosition>0</cv:StartPosition>
                 <cv:PositionUnits>Frames</cv:PositionUnits>
@@ -558,7 +558,7 @@ def process(value):
               <Property Name="FileName" DisplayName="cPX2MM" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>C:\Users\ALBINO\Desktop\VRConversions\PXc2MMc.txt</io:FileName>
+              <io:FileName>..\resources\VRData\VRConversions\PXc2MMc.txt</io:FileName>
               <io:ListSeparator />
               <io:ScanPattern>%f,%f,%f</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
@@ -614,7 +614,7 @@ def process(value):
               <Property Name="FileName" DisplayName="MM2VL" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>C:\Users\ALBINO\Desktop\VRConversions\MMc2VLc.txt</io:FileName>
+              <io:FileName>..\resources\VRData\VRConversions\MMl2VRl.txt</io:FileName>
               <io:ListSeparator />
               <io:ScanPattern>%f,%f,%f</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
@@ -670,7 +670,7 @@ def process(value):
               <Property Name="FileName" DisplayName="MM2pPX" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>C:\Users\ALBINO\Desktop\VRConversions\MMl2VRl.txt</io:FileName>
+              <io:FileName>..\resources\VRData\VRConversions\MMc2VLc.txt</io:FileName>
               <io:ListSeparator />
               <io:ScanPattern>%f,%f,%f</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
