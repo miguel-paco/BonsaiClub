@@ -10,13 +10,13 @@ using System.Reactive.Linq;
 [WorkflowElementCategory(ElementCategory.Transform)]
 public class UnitTransform
 {
-    public IObservable<Tuple<double, double>> Process(IObservable<Tuple<double, double, float[][]>> source)
+    public IObservable<Tuple<double, double>> Process(IObservable<Tuple<float, float, float[][]>> source)
     {
 
         return source.Select(value => Miguel(value));
     }
 
-    Tuple<double, double> Miguel(Tuple<double, double, float[][]> inputs)
+    Tuple<double, double> Miguel(Tuple<float, float, float[][]> inputs)
     {
         double a = inputs.Item3[0][0];
         double b = inputs.Item3[0][1];
