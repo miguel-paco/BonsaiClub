@@ -10,31 +10,31 @@ using System.Reactive.Linq;
 [WorkflowElementCategory(ElementCategory.Transform)]
 public class UnitTransform
 {
-    public IObservable<Tuple<double, double>> Process(IObservable<Tuple<float, float, float[][]>> source)
+    public IObservable<Tuple<float, float>> Process(IObservable<Tuple<float[][], Tuple<float, float>>> source)
     {
 
         return source.Select(value => Miguel(value));
     }
 
-    Tuple<double, double> Miguel(Tuple<float, float, float[][]> inputs)
+    Tuple<float, float> Miguel(Tuple<float[][], Tuple<float, float>> inputs)
     {
-        double a = inputs.Item3[0][0];
-        double b = inputs.Item3[0][1];
-        double c = inputs.Item3[0][2];
-        double d = inputs.Item3[1][0];
-        double e = inputs.Item3[1][1];
-        double f = inputs.Item3[1][2];
-        double g = inputs.Item3[2][0];
-        double h = inputs.Item3[2][1];
-        double i = inputs.Item3[2][2];
+        float a = inputs.Item1[0][0];
+        float b = inputs.Item1[0][1];
+        float c = inputs.Item1[0][2];
+        float d = inputs.Item1[1][0];
+        float e = inputs.Item1[1][1];
+        float f = inputs.Item1[1][2];
+        float g = inputs.Item1[2][0];
+        float h = inputs.Item1[2][1];
+        float i = inputs.Item1[2][2];
 
-        double x = inputs.Item1;
-        double y = inputs.Item2;
+        float x = inputs.Item2.Item1;
+        float y = inputs.Item2.Item2;
 
         x = (a*x + b*y + c) / (g*x + h*y + i);
         y = (d*x + e*y + f) / (g*x + h*y + i);
 
-        return new Tuple<double, double>(x ,y);
+        return new Tuple<float, float>(x ,y);
 
     }
 
