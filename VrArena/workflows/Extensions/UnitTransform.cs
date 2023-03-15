@@ -31,10 +31,10 @@ public class UnitTransform
         float x = inputs.Item2.Item1;
         float y = inputs.Item2.Item2;
 
-        x = (a*x + b*y + c) / (g*x + h*y + i);
-        y = (d*x + e*y + f) / (g*x + h*y + i);
+        float X = (a*x + b*y + c) / (g*x + h*y + i);
+        float Y = (d*x + e*y + f) / (g*x + h*y + i);
 
-        return new Tuple<float, float>(x ,y);
+        return new Tuple<float, float>(X, Y);
 
     }
 
