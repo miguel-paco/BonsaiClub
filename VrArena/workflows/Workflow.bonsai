@@ -102,7 +102,7 @@
                   </Expression>
                   <Expression xsi:type="Subtract">
                     <Operand xsi:type="DoubleProperty">
-                      <Value>53145.894975999996</Value>
+                      <Value>68127.0700032</Value>
                     </Operand>
                   </Expression>
                   <Expression xsi:type="PropertyMapping">
@@ -112,7 +112,7 @@
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="FloatProperty">
-                      <Value>11.9123325</Value>
+                      <Value>58.6036339</Value>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="scr:ExpressionTransform">
@@ -599,7 +599,7 @@ it.Item2 as Orientation)</scr:Expression>
         </Workflow>
       </Expression>
       <Expression xsi:type="GroupWorkflow">
-        <Name>Stimuli_WithShaders</Name>
+        <Name>Stimuli</Name>
         <Workflow>
           <Nodes>
             <Expression xsi:type="SubscribeSubject">
@@ -629,11 +629,8 @@ it.Item2 as Orientation)</scr:Expression>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="FloatProperty">
-                <Value>25</Value>
+                <Value>50</Value>
               </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="rx:Zip" />
             </Expression>
             <Expression xsi:type="SubscribeSubject">
               <Name>ElapsedTime (s)</Name>
@@ -663,7 +660,7 @@ it.Item2 as Orientation)</scr:Expression>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="FloatProperty">
-                <Value>0.0166502</Value>
+                <Value>0.0166654</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="MemberSelector">
@@ -674,6 +671,20 @@ it.Item2 as Orientation)</scr:Expression>
             </Expression>
             <Expression xsi:type="MemberSelector">
               <Selector>Item1.Item2.ElapsedTime</Selector>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:Zip" />
+            </Expression>
+            <Expression xsi:type="SubscribeSubject">
+              <Name>MM2pPX</Name>
+            </Expression>
+            <Expression xsi:type="ExternalizedMapping">
+              <Property Name="Value" DisplayName="Direction (1 or -1)" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="FloatProperty">
+                <Value>-1</Value>
+              </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Zip" />
@@ -689,10 +700,17 @@ it.Item2 as Orientation)</scr:Expression>
 StimX = None
 StimY = None
 StimOri = None
+k = None
+n = None
+state = None
+
+# states
+# 0 - straight
+# 1 - turn
 
 @returns(Tuple[float,float])
 def process(value):
-    global StimX, StimY, StimOri
+    global StimX, StimY, StimOri, k, n, state
     
     # Close Loop Input
     FlyX = value.Item1.Item1
@@ -707,12 +725,17 @@ def process(value):
     speed=value.Item2.Item1
     r=value.Item2.Item2
     l=value.Item2.Item3
+    sign=value.Item2.Item4
     
     # Protocol Algorithm -------------------------------     
     # Variables
     dd = speed*dt #length of the stimulus translation vector
-    dtheta=2*Math.Asin(speed*dt/(2*r)) #angle of the stimulus translation vector
-    halfl=l/2 #
+    dtheta=2*Math.Asin(dd/(2*r)) #angle of the stimulus translation vector
+    halfl=l/2
+    
+
+
+# #
         #adjust r
 #            k=math.pi//dtheta+1
 #            dtheta=math.pi/k
@@ -730,14 +753,31 @@ def process(value):
 #            StimY += 1    
 
     if StimX is None:
-      StimX = float(0)
+      StimX = sign*halfl
       StimY = float(0)
       StimOri = float(0)
-    else:
-      StimX += 1
-      StimY += 1
-      StimOri += 1
-    return Tuple.Create(float(StimX/100),float(StimY/100))</ipy:Script>
+      k = float(0)
+      n = l/dd
+      state = 0
+    elif (state==0 and n&gt;=1): 
+      StimX -= sign*dd
+      n -= 1
+    elif (state==0 and n&lt;1):
+      state = 1
+      StimX = -sign*halfl + (1-n)*dd
+      n = l/dd - (1-n)
+    elif (state==1 and n&gt;=1): 
+      StimX += sign*dd
+      n -= 1
+    elif (state==1 and n&lt;1):
+      state = 0
+      StimX = sign*halfl - (1-n)*dd
+      n = l/dd - (1-n)
+    #else:
+     # StimX += 1
+      #StimY += 1
+      #StimOri += 1
+    return Tuple.Create(float(StimX/100),float(state))</ipy:Script>
             </Expression>
             <Expression xsi:type="MemberSelector">
               <Selector>Item1</Selector>
@@ -749,7 +789,7 @@ def process(value):
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="FloatProperty">
-                <Value>5.82</Value>
+                <Value>0.03493087</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="MemberSelector">
@@ -762,14 +802,11 @@ def process(value):
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="FloatProperty">
-                <Value>5.82</Value>
+                <Value>0</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Zip" />
-            </Expression>
-            <Expression xsi:type="SubscribeSubject">
-              <Name>MM2pPX</Name>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:CombineLatest" />
@@ -800,65 +837,67 @@ it.Item2 as Y)</scr:Expression>
               </PropertyMappings>
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.DrawCircle.bonsai">
-              <LocationX>5.82</LocationX>
-              <LocationY>5.82</LocationY>
+              <LocationX>0.03493087</LocationX>
+              <LocationY>0</LocationY>
               <Layer>0</Layer>
-              <Diameter>0.933333337</Diameter>
+              <Diameter>0.1</Diameter>
               <ColorR>0</ColorR>
               <ColorG>0</ColorG>
-              <ColorB>1</ColorB>
+              <ColorB>0</ColorB>
               <ColorA>1</ColorA>
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
           </Nodes>
           <Edges>
-            <Edge From="0" To="10" Label="Source1" />
-            <Edge From="1" To="11" Label="Source2" />
+            <Edge From="0" To="9" Label="Source1" />
+            <Edge From="1" To="10" Label="Source2" />
             <Edge From="2" To="3" Label="Source1" />
-            <Edge From="3" To="8" Label="Source1" />
+            <Edge From="3" To="24" Label="Source1" />
             <Edge From="4" To="5" Label="Source1" />
-            <Edge From="5" To="8" Label="Source2" />
+            <Edge From="5" To="24" Label="Source2" />
             <Edge From="6" To="7" Label="Source1" />
-            <Edge From="7" To="8" Label="Source3" />
-            <Edge From="8" To="22" Label="Source2" />
-            <Edge From="9" To="10" Label="Source2" />
+            <Edge From="7" To="24" Label="Source3" />
+            <Edge From="8" To="9" Label="Source2" />
+            <Edge From="9" To="10" Label="Source1" />
             <Edge From="10" To="11" Label="Source1" />
-            <Edge From="11" To="12" Label="Source1" />
-            <Edge From="11" To="13" Label="Source1" />
-            <Edge From="11" To="14" Label="Source1" />
-            <Edge From="11" To="18" Label="Source1" />
-            <Edge From="11" To="19" Label="Source1" />
+            <Edge From="10" To="12" Label="Source1" />
+            <Edge From="10" To="13" Label="Source1" />
+            <Edge From="10" To="17" Label="Source1" />
+            <Edge From="10" To="18" Label="Source1" />
+            <Edge From="10" To="19" Label="Source1" />
             <Edge From="11" To="20" Label="Source1" />
-            <Edge From="12" To="21" Label="Source1" />
-            <Edge From="13" To="21" Label="Source2" />
+            <Edge From="12" To="20" Label="Source2" />
+            <Edge From="13" To="14" Label="Source1" />
             <Edge From="14" To="15" Label="Source1" />
             <Edge From="15" To="16" Label="Source1" />
-            <Edge From="16" To="17" Label="Source1" />
-            <Edge From="17" To="21" Label="Source5" />
-            <Edge From="18" To="21" Label="Source3" />
-            <Edge From="19" To="39" Label="Source1" />
-            <Edge From="20" To="21" Label="Source4" />
-            <Edge From="21" To="22" Label="Source1" />
+            <Edge From="16" To="20" Label="Source5" />
+            <Edge From="17" To="20" Label="Source3" />
+            <Edge From="18" To="41" Label="Source1" />
+            <Edge From="19" To="20" Label="Source4" />
+            <Edge From="20" To="25" Label="Source1" />
+            <Edge From="21" To="34" Label="Source1" />
             <Edge From="22" To="23" Label="Source1" />
-            <Edge From="23" To="24" Label="Source1" />
-            <Edge From="23" To="27" Label="Source1" />
-            <Edge From="24" To="25" Label="Source1" />
+            <Edge From="23" To="24" Label="Source4" />
+            <Edge From="24" To="25" Label="Source2" />
             <Edge From="25" To="26" Label="Source1" />
+            <Edge From="26" To="27" Label="Source1" />
             <Edge From="26" To="30" Label="Source1" />
             <Edge From="27" To="28" Label="Source1" />
             <Edge From="28" To="29" Label="Source1" />
-            <Edge From="29" To="30" Label="Source2" />
-            <Edge From="30" To="32" Label="Source2" />
+            <Edge From="29" To="33" Label="Source1" />
+            <Edge From="30" To="31" Label="Source1" />
             <Edge From="31" To="32" Label="Source1" />
-            <Edge From="32" To="33" Label="Source1" />
-            <Edge From="33" To="34" Label="Source1" />
+            <Edge From="32" To="33" Label="Source2" />
+            <Edge From="33" To="34" Label="Source2" />
             <Edge From="34" To="35" Label="Source1" />
-            <Edge From="34" To="37" Label="Source1" />
             <Edge From="35" To="36" Label="Source1" />
-            <Edge From="36" To="39" Label="Source2" />
+            <Edge From="36" To="37" Label="Source1" />
+            <Edge From="36" To="39" Label="Source1" />
             <Edge From="37" To="38" Label="Source1" />
-            <Edge From="38" To="39" Label="Source3" />
+            <Edge From="38" To="41" Label="Source2" />
             <Edge From="39" To="40" Label="Source1" />
+            <Edge From="40" To="41" Label="Source3" />
+            <Edge From="41" To="42" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
