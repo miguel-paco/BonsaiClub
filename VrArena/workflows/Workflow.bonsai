@@ -102,7 +102,7 @@
                   </Expression>
                   <Expression xsi:type="Subtract">
                     <Operand xsi:type="DoubleProperty">
-                      <Value>68127.0700032</Value>
+                      <Value>63032.964031999996</Value>
                     </Operand>
                   </Expression>
                   <Expression xsi:type="PropertyMapping">
@@ -112,7 +112,7 @@
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="FloatProperty">
-                      <Value>58.6036339</Value>
+                      <Value>18.387764</Value>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="scr:ExpressionTransform">
@@ -536,29 +536,51 @@ def process(value):
             <Expression xsi:type="MemberSelector">
               <Selector>Centroid</Selector>
             </Expression>
-            <Expression xsi:type="MemberSelector">
-              <Selector>X</Selector>
-            </Expression>
-            <Expression xsi:type="MemberSelector">
-              <Selector>Y</Selector>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="rx:Zip" />
-            </Expression>
-            <Expression xsi:type="SubscribeSubject">
-              <Name>cPX2MM</Name>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="rx:CombineLatest" />
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="p2:UnitTransform" />
-            </Expression>
-            <Expression xsi:type="scr:ExpressionTransform">
-              <scr:Name>Rename Var</scr:Name>
-              <scr:Expression>New(
+            <Expression xsi:type="GroupWorkflow">
+              <Name>ConvertToMm</Name>
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="SubscribeSubject">
+                    <Name>cPX2MM</Name>
+                  </Expression>
+                  <Expression xsi:type="WorkflowInput">
+                    <Name>Source1</Name>
+                  </Expression>
+                  <Expression xsi:type="MemberSelector">
+                    <Selector>X</Selector>
+                  </Expression>
+                  <Expression xsi:type="MemberSelector">
+                    <Selector>Y</Selector>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="rx:Zip" />
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="rx:CombineLatest" />
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="p2:UnitTransform" />
+                  </Expression>
+                  <Expression xsi:type="scr:ExpressionTransform">
+                    <scr:Name>Rename Var</scr:Name>
+                    <scr:Expression>New(
 it.Item1 as X,
 it.Item2 as Y)</scr:Expression>
+                  </Expression>
+                  <Expression xsi:type="WorkflowOutput" />
+                </Nodes>
+                <Edges>
+                  <Edge From="0" To="5" Label="Source1" />
+                  <Edge From="1" To="2" Label="Source1" />
+                  <Edge From="1" To="3" Label="Source1" />
+                  <Edge From="2" To="4" Label="Source1" />
+                  <Edge From="3" To="4" Label="Source2" />
+                  <Edge From="4" To="5" Label="Source2" />
+                  <Edge From="5" To="6" Label="Source1" />
+                  <Edge From="6" To="7" Label="Source1" />
+                  <Edge From="7" To="8" Label="Source1" />
+                </Edges>
+              </Workflow>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Zip" />
@@ -583,18 +605,11 @@ it.Item2 as Orientation)</scr:Expression>
             <Edge From="6" To="7" Label="Source1" />
             <Edge From="6" To="9" Label="Source1" />
             <Edge From="7" To="8" Label="Source1" />
-            <Edge From="8" To="17" Label="Source2" />
+            <Edge From="8" To="11" Label="Source2" />
             <Edge From="9" To="10" Label="Source1" />
-            <Edge From="9" To="11" Label="Source1" />
-            <Edge From="10" To="12" Label="Source1" />
-            <Edge From="11" To="12" Label="Source2" />
-            <Edge From="12" To="14" Label="Source2" />
-            <Edge From="13" To="14" Label="Source1" />
-            <Edge From="14" To="15" Label="Source1" />
-            <Edge From="15" To="16" Label="Source1" />
-            <Edge From="16" To="17" Label="Source1" />
-            <Edge From="17" To="18" Label="Source1" />
-            <Edge From="18" To="19" Label="Source1" />
+            <Edge From="10" To="11" Label="Source1" />
+            <Edge From="11" To="12" Label="Source1" />
+            <Edge From="12" To="13" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -621,7 +636,7 @@ it.Item2 as Orientation)</scr:Expression>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="FloatProperty">
-                <Value>5</Value>
+                <Value>25</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="ExternalizedMapping">
@@ -660,7 +675,7 @@ it.Item2 as Orientation)</scr:Expression>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="FloatProperty">
-                <Value>0.0166654</Value>
+                <Value>0.0166782</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="MemberSelector">
@@ -683,7 +698,7 @@ it.Item2 as Orientation)</scr:Expression>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="FloatProperty">
-                <Value>-1</Value>
+                <Value>1</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
@@ -694,90 +709,119 @@ it.Item2 as Orientation)</scr:Expression>
             </Expression>
             <Expression xsi:type="ipy:PythonTransform">
               <ipy:Name>Protocol</ipy:Name>
-              <ipy:Script>from System import Tuple, Math
+              <ipy:Script>import math
+from System import Tuple
 
-# Global Variables
-StimX = None
-StimY = None
-StimOri = None
-k = None
-n = None
-state = None
+# To Do
+#- Make Open Loop Inputs Item2
+#- Make Protocol Specific Inputs Item3
+#- Check if orientations are in radians or degrees in the end
+#- Implement global sign (protocol reflection)
+#- Stabilize steps on the curved section (k) and straight section (n)
+#- Explain Algorithm in the code
 
-# states
-# 0 - straight
-# 1 - turn
 
-@returns(Tuple[float,float])
+# Global Variables (Outputs)
+StimX = None                #Stimulus X Coordinate in Millimeters
+StimY = None                #Stimulus Y Coordinate in Millimeters
+StimOri = None              #Stimulus Orientation in Radians
+state = None                #Stimulus State
+
+# State Legend
+# 99 - Initiation (Close Loop With Fly Center of Mass and Orientation)
+# 0 - Straight Section
+# -1/1 - Curved Section (signal indicates direction of the turn - left vs right)
+
+# Global Protocol Variables
+n = None                    #Counter for the amount straight steps the stimulus needs to do before entering a curved section(if this number is not whole it is corrected on the first step of the curved section)
+m = None                    #Counter for the amount curved steps the stimulus needs to do before entering a straight section(if this number is not whole it is corrected on the first step of the straight section)
+sign_straight = None        #Used to shift directions during the straight sections
+sign_curve = None           #Used to shift rotation direction during the curves
+switch = None               #Used to add or not pi to the angle used to determine the curved section stimulus position (1 adds pi / -1 does not add pi)
+switch_counter = None       #Used to countdown the number of curved sections before the switch changes
+yi = None                   #Sets the initial stimulus y coordinate for the curved sections. Important since the the position of the target during the curved sections is done relative to the initial position
+
+
+
+
+@returns(Tuple[float,float,float,float])
 def process(value):
-    global StimX, StimY, StimOri, k, n, state
+    #Load Global Variables
+    global StimX, StimY, StimOri, n, m, state, sign_straight, sign_curve, switch, switch_counter, yi
     
     # Close Loop Input
-    FlyX = value.Item1.Item1
-    FlyY = value.Item1.Item2
-    FlyOri = value.Item1.Item3
+    FlyX = value.Item1.Item1      #Tracked Fly X Coordinate in Millimeters
+    FlyY = value.Item1.Item2      #Tracked Fly Y Coordinate in Millimeters
+    FlyOri = value.Item1.Item3    #Tracked Fly Orientation in Radians
     
     # Open Loop Input
-    t = value.Item1.Item4
-    dt = value.Item1.Item5
+    t = value.Item1.Item4         #Elapsed time since the start of the experiment
+    dt = value.Item1.Item5        #Interval of time since last projected frame
       
     # Protocol Specific Inputs
-    speed=value.Item2.Item1
-    r=value.Item2.Item2
-    l=value.Item2.Item3
-    sign=value.Item2.Item4
+    speed=value.Item2.Item1       #Stimulus speed in Millimeters/Second
+    r=value.Item2.Item2           #Radius of the curved section
+    l=value.Item2.Item3           #Length of the straight section
+    sign=value.Item2.Item4        #Global direction (changes the entire protocol direction to the mirror image)
     
+    # Protocol Constants
+    dd = speed*dt                 #Amount of distance traveled by the stimulus in between projection frames
+    halfl=l/2                     #Half of the length of the straight path (Used to keep the protocol centered and to know the starting X protision of the curved sections)            
+    k = halfc/dd                  
+
+
     # Protocol Algorithm -------------------------------     
-    # Variables
-    dd = speed*dt #length of the stimulus translation vector
-    dtheta=2*Math.Asin(dd/(2*r)) #angle of the stimulus translation vector
-    halfl=l/2
-    
+    if t &lt; 5:
+      StimX = FlyX
+      StimY = FlyY
+      StimOri = FlyOri
+      sign_straight = 1
+      sign_curve = 1
+      switch = -1
+      switch_counter = 0
+      state = 99
+    else:
+      if n is None:
+        StimX = -halfl
+        StimY = 0
+        StimOri = FlyOri
+        n = l/dd
+        m = 0
+        state = 0
+      elif (state==0 and n&gt;=1): 
+        StimX += sign_straight*dd
+        n -= 1
+      elif (n&lt;1 and (m+1)&lt;k):
+        if m==0:
+          m = (1-n)
+          state = sign_curve*1
+          yi = StimY
+        else:
+          m += 1
+        vangle = sign_curve*(((1-m/k)*math.pi/2) + (1+switch)*math.pi/2)
+        vlength = 2*r*math.sin((m/k)*math.pi/2) 
+        StimX = sign_straight*halfl + vlength*math.sin(vangle)
+        StimY = yi + vlength*math.cos(vangle)
+      elif ((m+1)&gt;k):
+        StimX = sign_straight*(halfl - (1-(m+1-k))*dd)
+        n = l/dd - (m+1-k)
+        m = 0
+        sign_straight = -sign_straight
+        if (switch_counter==0):
+          switch = -switch
+          switch_counter = 2
+        elif (switch_counter==1):
+          sign_curve = -sign_curve
+        switch_counter -= 1
+        state = 0
 
 
-# #
-        #adjust r
-#            k=math.pi//dtheta+1
-#            dtheta=math.pi/k
-#            r=dd/(2*math.sin(dtheta/2))
-        #adjust L
-#            n=(l/dd)+1
-#            l=n*dd 
-        # Algorithm
-#        if StimX is None:
-#            StimX = 0
-#            StimY = 0
-#            StimOri = 0
-#        else:
-#            StimX += 1
-#            StimY += 1    
-
-    if StimX is None:
-      StimX = sign*halfl
-      StimY = float(0)
-      StimOri = float(0)
-      k = float(0)
-      n = l/dd
-      state = 0
-    elif (state==0 and n&gt;=1): 
-      StimX -= sign*dd
-      n -= 1
-    elif (state==0 and n&lt;1):
-      state = 1
-      StimX = -sign*halfl + (1-n)*dd
-      n = l/dd - (1-n)
-    elif (state==1 and n&gt;=1): 
-      StimX += sign*dd
-      n -= 1
-    elif (state==1 and n&lt;1):
-      state = 0
-      StimX = sign*halfl - (1-n)*dd
-      n = l/dd - (1-n)
+   
     #else:
      # StimX += 1
       #StimY += 1
       #StimOri += 1
-    return Tuple.Create(float(StimX/100),float(state))</ipy:Script>
+    return Tuple.Create(float(StimX/100),float(StimY/100),float(StimOri),float(state))</ipy:Script>
             </Expression>
             <Expression xsi:type="MemberSelector">
               <Selector>Item1</Selector>
@@ -789,7 +833,7 @@ def process(value):
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="FloatProperty">
-                <Value>0.03493087</Value>
+                <Value>-0.149166241</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="MemberSelector">
@@ -802,7 +846,7 @@ def process(value):
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="FloatProperty">
-                <Value>0</Value>
+                <Value>-3.26103122E-06</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
@@ -837,8 +881,8 @@ it.Item2 as Y)</scr:Expression>
               </PropertyMappings>
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.DrawCircle.bonsai">
-              <LocationX>0.03493087</LocationX>
-              <LocationY>0</LocationY>
+              <LocationX>-0.149166241</LocationX>
+              <LocationY>-3.26103122E-06</LocationY>
               <Layer>0</Layer>
               <Diameter>0.1</Diameter>
               <ColorR>0</ColorR>
@@ -847,6 +891,121 @@ it.Item2 as Y)</scr:Expression>
               <ColorA>1</ColorA>
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
+            <Expression xsi:type="MemberSelector">
+              <Selector>Item3</Selector>
+            </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>Item4</Selector>
+            </Expression>
+            <Expression xsi:type="Disable">
+              <Builder xsi:type="ipy:PythonTransform">
+                <ipy:Name>Protocol</ipy:Name>
+                <ipy:Script>import math
+from System import Tuple
+
+# Global Variables
+StimX = None
+StimY = None
+StimOri = None
+n = None
+state = None
+sign_straight = None
+sign_curve = None
+
+# states
+# 0 - straight
+# 1 - turn
+
+@returns(Tuple[float,float,float])
+def process(value):
+    global StimX, StimY, StimOri, n, state, sign_straight, sign_curve 
+    
+    # Close Loop Input
+    FlyX = value.Item1.Item1
+    FlyY = value.Item1.Item2
+    FlyOri = value.Item1.Item3
+    
+    # Open Loop Input
+    t = value.Item1.Item4
+    dt = value.Item1.Item5
+      
+    # Protocol Specific Inputs
+    speed=value.Item2.Item1
+    r=value.Item2.Item2
+    l=value.Item2.Item3
+    sign=value.Item2.Item4
+    
+    # Protocol Algorithm -------------------------------     
+    # Set Variables
+    dd = speed*dt #length of the stimulus translation vector
+    halfl=l/2
+    halfc=r*math.pi
+    k = halfc/dd
+
+
+    
+    if t &lt; 5:
+      StimX = FlyX
+      StimY = FlyY
+      StimOri = FlyOri
+      sign_straight = 1
+      sign_curve = 1
+      state = float(0)
+    else:
+      if n is None:
+        StimX = -halfl
+        StimY = 0
+        StimOri = FlyOri
+        n = l/dd
+        state = sign_straight * 1
+      elif (state==sign_straight and n&gt;=1): 
+        StimX += sign_straight*dd
+        n -= 1
+      elif (state==1 and n&lt;1):
+        n = (1-n)  
+        vangle = ((1-n/k)*math.pi/2)
+        vlength = 2*r*math.sin((n/k)*math.pi/2)
+        StimX = halfl + vlength*math.sin(vangle)
+        StimY = vlength*math.cos(vangle)
+        state = 2
+      elif (state==2 and (n+1)&lt;k):
+        n += 1  
+        vangle = ((1-n/k)*math.pi/2)
+        vlength = 2*r*math.sin((n/k)*math.pi/2)
+        StimX = halfl + vlength*math.sin(vangle)
+        StimY = vlength*math.cos(vangle)
+      elif (state==2 and (n+1)&gt;k):
+        StimX = halfl - (1-(n+1-k))*dd
+        n = l/dd - (n+1-k)
+        sign_straight = -sign_straight
+        state = sign_straight*1
+      elif (state==-1 and n&lt;1):
+        n = (1-n)  
+        vangle = ((1-n/k)*math.pi/2) + math.pi
+        vlength = 2*r*math.sin((n/k)*math.pi/2)
+        StimX = -halfl + vlength*math.sin(vangle)
+        StimY = r*2 + vlength*math.cos(vangle)
+        state = 3
+      elif (state==3 and (n+1)&lt;k):
+        n += 1  
+        vangle = ((1-n/k)*math.pi/2) + math.pi
+        vlength = 2*r*math.sin((n/k)*math.pi/2)
+        StimX = -halfl + vlength*math.sin(vangle)
+        StimY = r*2 + vlength*math.cos(vangle)
+      elif (state==3 and (n+1)&gt;k):
+        StimX = -halfl + (1-(n+1-k))*dd
+        n = l/dd - (n+1-k)
+        sign_straight = -sign_straight
+        state = sign_straight*1
+
+   
+    #else:
+     # StimX += 1
+      #StimY += 1
+      #StimOri += 1
+    return Tuple.Create(float(StimX/100),float(StimY/100),float(state))</ipy:Script>
+              </Builder>
+            </Expression>
           </Nodes>
           <Edges>
             <Edge From="0" To="9" Label="Source1" />
@@ -882,6 +1041,8 @@ it.Item2 as Y)</scr:Expression>
             <Edge From="25" To="26" Label="Source1" />
             <Edge From="26" To="27" Label="Source1" />
             <Edge From="26" To="30" Label="Source1" />
+            <Edge From="26" To="43" Label="Source1" />
+            <Edge From="26" To="44" Label="Source1" />
             <Edge From="27" To="28" Label="Source1" />
             <Edge From="28" To="29" Label="Source1" />
             <Edge From="29" To="33" Label="Source1" />
