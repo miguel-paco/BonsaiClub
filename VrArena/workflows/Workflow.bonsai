@@ -102,7 +102,7 @@
                   </Expression>
                   <Expression xsi:type="Subtract">
                     <Operand xsi:type="DoubleProperty">
-                      <Value>55297.1590784</Value>
+                      <Value>56014.7348352</Value>
                     </Operand>
                   </Expression>
                   <Expression xsi:type="PropertyMapping">
@@ -112,7 +112,7 @@
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="FloatProperty">
-                      <Value>13.8539524</Value>
+                      <Value>32.8760948</Value>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="scr:ExpressionTransform">
@@ -592,7 +592,7 @@ it.Item1 as Centroid,
 it.Item2 as Orientation)</scr:Expression>
             </Expression>
             <Expression xsi:type="rx:BehaviorSubject">
-              <Name>Tracked Fly</Name>
+              <Name>Fly</Name>
             </Expression>
           </Nodes>
           <Edges>
@@ -621,7 +621,7 @@ it.Item2 as Orientation)</scr:Expression>
               <Name>Draw</Name>
             </Expression>
             <Expression xsi:type="SubscribeSubject">
-              <Name>Tracked Fly</Name>
+              <Name>Fly</Name>
             </Expression>
             <Expression xsi:type="ExternalizedMapping">
               <Property Name="Value" DisplayName="Speed (mm/s)" />
@@ -675,7 +675,7 @@ it.Item2 as Orientation)</scr:Expression>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="FloatProperty">
-                <Value>0.0166583</Value>
+                <Value>0.016669</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="MemberSelector">
@@ -836,7 +836,7 @@ def process(value):
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="FloatProperty">
-                      <Value>-0.2322528</Value>
+                      <Value>0.1829827</Value>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="MemberSelector">
@@ -849,7 +849,7 @@ def process(value):
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="FloatProperty">
-                      <Value>0.4999876</Value>
+                      <Value>-8.273986E-06</Value>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="Combinator">
@@ -906,8 +906,8 @@ it.Item2 as Y)</scr:Expression>
               </PropertyMappings>
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.DrawCircle.bonsai">
-              <LocationX>-0.2322528</LocationX>
-              <LocationY>0.4999876</LocationY>
+              <LocationX>0.1829827</LocationX>
+              <LocationY>-8.273986E-06</LocationY>
               <Layer>0</Layer>
               <Diameter>0.1</Diameter>
               <ColorR>0</ColorR>
@@ -1099,6 +1099,57 @@ it.Item2 as Y)</scr:Expression>
             </Edges>
           </Workflow>
         </Builder>
+      </Expression>
+      <Expression xsi:type="GroupWorkflow">
+        <Name>Photodiode</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="SubscribeSubject">
+              <Name>Draw</Name>
+            </Expression>
+            <Expression xsi:type="ipy:PythonTransform">
+              <ipy:Name>Protocol</ipy:Name>
+              <ipy:Script># Global Variables (Outputs)
+Switch = None                #Stimulus X Coordinate in Millimeters
+
+@returns(float)
+def process(value):
+    #Load Global Variables
+    global Switch
+    
+    if Switch is None:
+      Switch = 1
+    elif Switch == 1:
+      Switch = 0
+    elif Switch == 0:
+      Switch = 1
+    return Switch</ipy:Script>
+            </Expression>
+            <Expression xsi:type="PropertyMapping">
+              <PropertyMappings>
+                <Property Name="ColorA" />
+              </PropertyMappings>
+            </Expression>
+            <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.DrawCircle.bonsai">
+              <LocationX>-0.9</LocationX>
+              <LocationY>0.9</LocationY>
+              <Layer>0</Layer>
+              <Diameter>0.1</Diameter>
+              <ColorR>0</ColorR>
+              <ColorG>0</ColorG>
+              <ColorB>0</ColorB>
+              <ColorA>1</ColorA>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="3" Label="Source1" />
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="1" To="2" Label="Source1" />
+            <Edge From="2" To="3" Label="Source2" />
+            <Edge From="3" To="4" Label="Source1" />
+          </Edges>
+        </Workflow>
       </Expression>
     </Nodes>
     <Edges />
