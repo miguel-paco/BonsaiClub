@@ -102,7 +102,7 @@
                   </Expression>
                   <Expression xsi:type="Subtract">
                     <Operand xsi:type="DoubleProperty">
-                      <Value>62301.4614144</Value>
+                      <Value>70762.3880448</Value>
                     </Operand>
                   </Expression>
                   <Expression xsi:type="PropertyMapping">
@@ -112,7 +112,7 @@
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="FloatProperty">
-                      <Value>9.1296</Value>
+                      <Value>54.37746</Value>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="scr:ExpressionTransform">
@@ -516,15 +516,20 @@
                 <cv:Method>Horizontal</cv:Method>
               </Combinator>
             </Expression>
-            <Expression xsi:type="ipy:PythonTransform">
-              <ipy:Name>FixOrientation</ipy:Name>
-              <ipy:Script>import clr
+            <Expression xsi:type="Disable">
+              <Builder xsi:type="ipy:PythonTransform">
+                <ipy:Name>FixOrientation</ipy:Name>
+                <ipy:Script>import math
+import clr
 clr.AddReference("OpenCV.Net")
-from System import Tuple, Math, Single
 from OpenCV.Net import Point2f
+from System import Single
 
-head = None
-tail = None
+# Global Variables
+head = None                #
+tail = None                #
+counter = None
+history = None
 
 def distancesquare(pt1,pt2):
   dx = (pt2.X - pt1.X)
@@ -534,25 +539,145 @@ def distancesquare(pt1,pt2):
 def angleline(pt1,pt2):
   dx = (pt2.X - pt1.X)
   dy = (pt2.Y - pt1.Y)
-  return Math.Atan2(dy, dx)
+  return math.atan2(dy, dx)
 
-@returns(Single)
-def process(value):
-  global head, tail
-  pt1 = value.Item1
-  pt2 = value.Item2
-  if pt1.X == Single(float.NaN):
-    head = None
-    tail = None
-    return float.NaN
+def cossimilarity(pt1,pt2):
+  if (dotproduct(pt1,pt1)*dotproduct(pt2,pt2)) == 0:
+    return 1
   else:
-    if head is None or distancesquare(pt1, head) &lt; distancesquare(pt1, tail):
-      head = pt1
-      tail = pt2
+    return dotproduct(pt1,pt2)/(math.sqrt(dotproduct(pt1,pt1))*math.sqrt(dotproduct(pt2,pt2)))
+
+def dotproduct(pt1,pt2):
+  return pt1.X*pt2.X+pt1.Y*pt2.Y
+
+@returns(Point2f)
+def process(value):
+    #Load Global Variables
+    global head, tail, counter, history
+    
+    pt1 = value.Item1
+    pt2 = value.Item2
+
+    if head is None:
+      head = Point2f(float.NaN,float.NaN)
+      tail = Point2f(float.NaN,float.NaN)
+      counter = 0
+      history = 0
+    if pt1.X == Single(float.NaN):
+      head = None
+      tail = None
+      return float.NaN
     else:
-      head = pt2
-      tail = pt1
-    return angleline(head,tail)</ipy:Script>
+      prevhead = head
+      if distancesquare(pt1, head) &lt; distancesquare(pt1, tail):
+        head = pt1
+        tail = pt2
+      else:
+        head = pt2
+        tail = pt1
+      pt1 = head
+      pt2 = tail
+      if counter == 0:
+        prevhead = tail
+      if counter &lt; 20:
+        counter += 1
+      diff1 = Point2f(head.X-tail.X,head.Y-tail.Y)
+      diff2 = Point2f(head.X-prevhead.X,head.Y-prevhead.Y)
+      history = (history*(counter-1)/counter)+cossimilarity(diff1,diff2)/counter
+      if history &lt; 0:
+        head = pt2
+        tail = pt1
+        counter = 0
+        history = 0
+      return head#angleline(head,tail)</ipy:Script>
+              </Builder>
+            </Expression>
+            <Expression xsi:type="ipy:PythonTransform">
+              <ipy:Name>FixOrientation</ipy:Name>
+              <ipy:Script>import math
+import clr
+clr.AddReference("OpenCV.Net")
+from OpenCV.Net import Point2f
+from System import Single
+
+# Global Variables
+velocity = None
+head = None
+tail = None
+counter = None
+history = None
+
+
+def distancesquare(pt1,pt2):
+  dx = (pt2.X - pt1.X)
+  dy = (pt2.Y - pt1.Y)
+  return dx * dx + dy * dy
+
+def angleline(pt1,pt2):
+  dx = (pt2.X - pt1.X)
+  dy = (pt2.Y - pt1.Y)
+  return math.atan2(dy, dx)
+
+def cossimilarity(pt1,pt2):
+  if (dotproduct(pt1,pt1)*dotproduct(pt2,pt2)) == 0:
+    return 1
+  else:
+    return dotproduct(pt1,pt2)/(math.sqrt(dotproduct(pt1,pt1))*math.sqrt(dotproduct(pt2,pt2)))
+
+def dotproduct(pt1,pt2):
+  return pt1.X*pt2.X+pt1.Y*pt2.Y
+
+@returns(Point2f)
+def process(value):
+    #Load Global Variables
+    global velocity, head, tail, counter, history
+    
+    pt1 = value.Item1
+    pt2 = value.Item2
+
+    if pt1.X == Single(float.NaN):
+      return Point2f(float.NaN,float.NaN)
+    else:
+      if head = None:
+        head = pt1
+        tail = pt2
+      else:
+        # If only one point has been seen
+        if velocity = None:
+          if distancesquare(pt1, head) &lt; distancesquare(pt1, tail):
+            head = pt1
+            tail = pt2
+          else:
+            head = pt2
+            tail = pt1
+          velocity = Point2f(pt1.X-head.X,pt1.Y-head.Y)
+          history = 0
+          counter = 0
+        # If more then one point has been seen
+        else:
+          bodyOri = Point2f(p1.X-p2.X,p1.Y-p2.Y)
+          if cossimilarity(bodyOri,velocity) &lt; 0:
+            aux = p1
+            p1 = p2
+            p2 = aux
+          instantaneousVelocity = Point2f(p1.X-head.X,p1.Y-head.Y)
+          if counter &lt; 20:
+            counter += 1
+          history = (history*(counter-1)/counter)+cossimilarity(instantaneousVelocity,velocity)/counter
+          if history &lt; 0:
+            history = 1
+            counter = 0
+            head = pt2
+            tail = pt1
+            
+      return head
+
+
+
+    return head#angleline(head,tail)</ipy:Script>
+            </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>X</Selector>
             </Expression>
             <Expression xsi:type="MemberSelector">
               <Selector>Centroid</Selector>
@@ -625,7 +750,7 @@ it.Item2 as Y)</scr:Expression>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="FloatProperty">
-                <Value>0.0160706</Value>
+                <Value>0.0160212</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="SubscribeSubject">
@@ -652,8 +777,8 @@ it.Item6 as LowResFrame)</scr:Expression>
             <Edge From="0" To="2" Label="Source1" />
             <Edge From="1" To="2" Label="Source2" />
             <Edge From="2" To="3" Label="Source1" />
-            <Edge From="2" To="16" Label="Source1" />
-            <Edge From="2" To="17" Label="Source1" />
+            <Edge From="2" To="18" Label="Source1" />
+            <Edge From="2" To="19" Label="Source1" />
             <Edge From="3" To="4" Label="Source1" />
             <Edge From="4" To="5" Label="Source1" />
             <Edge From="5" To="6" Label="Source1" />
@@ -661,22 +786,24 @@ it.Item6 as LowResFrame)</scr:Expression>
             <Edge From="7" To="8" Label="Source1" />
             <Edge From="8" To="9" Label="Source1" />
             <Edge From="9" To="10" Label="Source1" />
-            <Edge From="9" To="12" Label="Source1" />
+            <Edge From="9" To="14" Label="Source1" />
             <Edge From="10" To="11" Label="Source1" />
-            <Edge From="11" To="22" Label="Source3" />
+            <Edge From="11" To="12" Label="Source1" />
             <Edge From="12" To="13" Label="Source1" />
-            <Edge From="13" To="14" Label="Source1" />
-            <Edge From="13" To="15" Label="Source1" />
-            <Edge From="14" To="22" Label="Source1" />
-            <Edge From="15" To="22" Label="Source2" />
-            <Edge From="16" To="22" Label="Source4" />
-            <Edge From="17" To="18" Label="Source1" />
-            <Edge From="18" To="19" Label="Source1" />
+            <Edge From="13" To="24" Label="Source3" />
+            <Edge From="14" To="15" Label="Source1" />
+            <Edge From="15" To="16" Label="Source1" />
+            <Edge From="15" To="17" Label="Source1" />
+            <Edge From="16" To="24" Label="Source1" />
+            <Edge From="17" To="24" Label="Source2" />
+            <Edge From="18" To="24" Label="Source4" />
             <Edge From="19" To="20" Label="Source1" />
-            <Edge From="20" To="22" Label="Source5" />
-            <Edge From="21" To="22" Label="Source6" />
-            <Edge From="22" To="23" Label="Source1" />
-            <Edge From="23" To="24" Label="Source1" />
+            <Edge From="20" To="21" Label="Source1" />
+            <Edge From="21" To="22" Label="Source1" />
+            <Edge From="22" To="24" Label="Source5" />
+            <Edge From="23" To="24" Label="Source6" />
+            <Edge From="24" To="25" Label="Source1" />
+            <Edge From="25" To="26" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -736,7 +863,7 @@ it.Item6 as LowResFrame)</scr:Expression>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="FloatProperty">
-                <Value>0.0166714</Value>
+                <Value>0.0166672</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="MemberSelector">
@@ -797,7 +924,7 @@ it as Screen)</scr:Expression>
                         </Expression>
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="FloatProperty">
-                            <Value>0.4758541</Value>
+                            <Value>-0.499417484</Value>
                           </Combinator>
                         </Expression>
                         <Expression xsi:type="MemberSelector">
@@ -810,7 +937,7 @@ it as Screen)</scr:Expression>
                         </Expression>
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="FloatProperty">
-                            <Value>0.357191056</Value>
+                            <Value>-0.266899467</Value>
                           </Combinator>
                         </Expression>
                         <Expression xsi:type="Combinator">
@@ -870,8 +997,8 @@ it.Item2 as Y)</scr:Expression>
                     <Property Name="Diameter" />
                   </Expression>
                   <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.DrawCircle.bonsai">
-                    <LocationX>0.4758541</LocationX>
-                    <LocationY>0.357191056</LocationY>
+                    <LocationX>-0.499417484</LocationX>
+                    <LocationY>-0.266899467</LocationY>
                     <Layer>0</Layer>
                     <Diameter>0.1</Diameter>
                     <ColorR>0</ColorR>
@@ -1258,7 +1385,7 @@ def process(value):
               <ColorR>0</ColorR>
               <ColorG>0</ColorG>
               <ColorB>0</ColorB>
-              <ColorA>0</ColorA>
+              <ColorA>1</ColorA>
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
           </Nodes>
@@ -1269,13 +1396,6 @@ def process(value):
             <Edge From="2" To="3" Label="Source2" />
             <Edge From="3" To="4" Label="Source1" />
           </Edges>
-        </Workflow>
-      </Expression>
-      <Expression xsi:type="GroupWorkflow">
-        <Name>Protocol</Name>
-        <Workflow>
-          <Nodes />
-          <Edges />
         </Workflow>
       </Expression>
       <Expression xsi:type="Disable">
@@ -1484,14 +1604,14 @@ def process(value):
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="rx:Timer">
-          <rx:DueTime>PT10S</rx:DueTime>
+          <rx:DueTime>PT5M</rx:DueTime>
           <rx:Period>PT0S</rx:Period>
         </Combinator>
       </Expression>
       <Expression xsi:type="WorkflowOutput" />
     </Nodes>
     <Edges>
-      <Edge From="8" To="9" Label="Source1" />
+      <Edge From="7" To="8" Label="Source1" />
     </Edges>
   </Workflow>
 </WorkflowBuilder>
