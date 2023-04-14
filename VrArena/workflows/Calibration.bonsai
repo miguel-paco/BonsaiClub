@@ -83,11 +83,11 @@
         <Name>Draw</Name>
       </Expression>
       <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.DrawCheckerboard.bonsai">
-        <NumberColumns>5</NumberColumns>
-        <NumberRows>10</NumberRows>
+        <NumberColumns>3</NumberColumns>
+        <NumberRows>6</NumberRows>
         <Phase>0</Phase>
-        <ExtentX>0.5</ExtentX>
-        <ExtentY>1</ExtentY>
+        <ExtentX>0.6</ExtentX>
+        <ExtentY>1.2</ExtentY>
         <LocationX>0</LocationX>
         <LocationY>0</LocationY>
         <Layer>0</Layer>
