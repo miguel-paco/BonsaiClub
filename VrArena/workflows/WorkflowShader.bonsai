@@ -619,7 +619,7 @@
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="FloatProperty">
-                      <Value>30</Value>
+                      <Value>40</Value>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="ExternalizedMapping">
@@ -881,7 +881,7 @@ it.Item6 as NoFlashFrames)</scr:Expression>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="ipy:PythonTransform">
-                    <ipy:Name>FindOrientation</ipy:Name>
+                    <ipy:Name>FindHead</ipy:Name>
                     <ipy:Script>import math
 import clr
 clr.AddReference("OpenCV.Net")
@@ -915,7 +915,7 @@ def cossimilarity(pt1,pt2):
 def dotproduct(pt1,pt2):
   return pt1.X*pt2.X+pt1.Y*pt2.Y
 
-@returns(Tuple[float,Point2f])
+@returns(Tuple[Point2f])
 def process(value):
     #Load Global Variables
     global velocity, head, tail, counter, history
@@ -924,12 +924,12 @@ def process(value):
     pt2 = value.Item2
 
     if math.isnan(pt1.X):
-      return Tuple.Create(float.NaN,Point2f(float.NaN,float.NaN))
+      return Tuple.Create(Point2f(float.NaN,float.NaN))
     else:
       if head is None:
         head = pt1
         tail = pt2
-        return Tuple.Create(float.NaN,Point2f(float.NaN,float.NaN))
+        return Tuple.Create(Point2f(float.NaN,float.NaN))
       else:
         # If only one point has been seen
         if velocity is None:
@@ -967,17 +967,12 @@ def process(value):
             tail = pt2
           #velocity = instantaneousVelocity
         # Flip Y Axis for cartesian referential normalization
-        orientation = angleline(Point2f(tail.X,-tail.Y),Point2f(head.X,-head.Y))
-        return Tuple.Create(orientation,head)</ipy:Script>
+        return Tuple.Create(head)</ipy:Script>
                   </Expression>
                   <Expression xsi:type="scr:ExpressionTransform">
                     <scr:Name>Rename Var</scr:Name>
                     <scr:Expression>New(
-it.Item1 as Orientation,
-it.Item2 as Head)</scr:Expression>
-                  </Expression>
-                  <Expression xsi:type="MemberSelector">
-                    <Selector>Orientation</Selector>
+it.Item1 as Head)</scr:Expression>
                   </Expression>
                   <Expression xsi:type="MemberSelector">
                     <Selector>Head</Selector>
@@ -1085,6 +1080,37 @@ def process(value):
                       </Edges>
                     </Workflow>
                   </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="rx:Zip" />
+                  </Expression>
+                  <Expression xsi:type="ipy:PythonTransform">
+                    <ipy:Name>CalculateOrientation</ipy:Name>
+                    <ipy:Script>import math
+import clr
+clr.AddReference("OpenCV.Net")
+from OpenCV.Net import Point2f
+from System import Single, Tuple
+
+def angleline(pt1,pt2):
+  dx = (pt2.X - pt1.X)
+  dy = (pt2.Y - pt1.Y)
+  return math.atan2(dy, dx)
+
+@returns(float)
+def process(value):
+    centroid = value.Item1
+    head = value.Item2
+    orientation = angleline(centroid,head)
+    return float(orientation)</ipy:Script>
+                  </Expression>
+                  <Expression xsi:type="scr:ExpressionTransform">
+                    <scr:Name>Rename Var</scr:Name>
+                    <scr:Expression>New(
+it as Orientation)</scr:Expression>
+                  </Expression>
+                  <Expression xsi:type="MemberSelector">
+                    <Selector>Orientation</Selector>
+                  </Expression>
                   <Expression xsi:type="SubscribeSubject">
                     <Name>HighResCamera</Name>
                   </Expression>
@@ -1097,9 +1123,6 @@ def process(value):
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="rx:WithLatestFrom" />
                   </Expression>
-                  <Expression xsi:type="MemberSelector">
-                    <Selector>Item2</Selector>
-                  </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="rx:Zip" />
                   </Expression>
@@ -1109,11 +1132,11 @@ def process(value):
                   <Expression xsi:type="scr:ExpressionTransform">
                     <scr:Name>Rename Var</scr:Name>
                     <scr:Expression>New(
-it.Value.Item1.Item2 as LowResFrame,
-it.Value.Item5 as HighResFrame,
+it.Value.Item1.Item1.Item2 as LowResFrame,
+it.Value.Item1.Item2 as HighResFrame,
 it.Value.Item2 as Centroid,
-it.Value.Item3 as Orientation,
-it.Value.Item4 as Head,
+it.Value.Item3 as Head,
+it.Value.Item4 as Orientation,
 it.Timestamp as Time)</scr:Expression>
                   </Expression>
                   <Expression xsi:type="rx:BehaviorSubject">
@@ -1129,35 +1152,37 @@ it.Timestamp as Time)</scr:Expression>
                 <Edges>
                   <Edge From="0" To="3" Label="Source1" />
                   <Edge From="0" To="1" Label="Source1" />
-                  <Edge From="0" To="23" Label="Source1" />
+                  <Edge From="0" To="25" Label="Source1" />
                   <Edge From="1" To="2" Label="Source1" />
                   <Edge From="2" To="3" Label="Source2" />
                   <Edge From="3" To="4" Label="Source1" />
-                  <Edge From="3" To="19" Label="Source1" />
-                  <Edge From="3" To="17" Label="Source1" />
+                  <Edge From="3" To="20" Label="Source1" />
                   <Edge From="4" To="5" Label="Source1" />
                   <Edge From="5" To="6" Label="Source1" />
-                  <Edge From="5" To="12" Label="Source1" />
+                  <Edge From="5" To="11" Label="Source1" />
                   <Edge From="6" To="7" Label="Source1" />
                   <Edge From="7" To="8" Label="Source1" />
                   <Edge From="8" To="9" Label="Source1" />
-                  <Edge From="8" To="10" Label="Source1" />
-                  <Edge From="9" To="19" Label="Source3" />
-                  <Edge From="10" To="11" Label="Source1" />
-                  <Edge From="10" To="23" Label="Source3" />
-                  <Edge From="11" To="19" Label="Source4" />
+                  <Edge From="9" To="10" Label="Source1" />
+                  <Edge From="9" To="25" Label="Source3" />
+                  <Edge From="10" To="21" Label="Source3" />
+                  <Edge From="10" To="13" Label="Source2" />
+                  <Edge From="11" To="12" Label="Source1" />
+                  <Edge From="11" To="25" Label="Source2" />
+                  <Edge From="12" To="21" Label="Source2" />
                   <Edge From="12" To="13" Label="Source1" />
-                  <Edge From="12" To="23" Label="Source2" />
-                  <Edge From="13" To="19" Label="Source2" />
+                  <Edge From="13" To="14" Label="Source1" />
                   <Edge From="14" To="15" Label="Source1" />
                   <Edge From="15" To="16" Label="Source1" />
-                  <Edge From="16" To="17" Label="Source2" />
+                  <Edge From="16" To="21" Label="Source4" />
                   <Edge From="17" To="18" Label="Source1" />
-                  <Edge From="18" To="19" Label="Source5" />
-                  <Edge From="19" To="20" Label="Source1" />
+                  <Edge From="18" To="19" Label="Source1" />
+                  <Edge From="19" To="20" Label="Source2" />
                   <Edge From="20" To="21" Label="Source1" />
                   <Edge From="21" To="22" Label="Source1" />
+                  <Edge From="22" To="23" Label="Source1" />
                   <Edge From="23" To="24" Label="Source1" />
+                  <Edge From="25" To="26" Label="Source1" />
                 </Edges>
               </Workflow>
             </Expression>
@@ -1337,9 +1362,10 @@ def process(value):
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="rx:WithLatestFrom" />
                   </Expression>
-                  <Expression xsi:type="ipy:PythonTransform">
-                    <ipy:Name>Protocol</ipy:Name>
-                    <ipy:Script>import math
+                  <Expression xsi:type="Disable">
+                    <Builder xsi:type="ipy:PythonTransform">
+                      <ipy:Name>Protocol</ipy:Name>
+                      <ipy:Script>import math
 from System import Tuple
 
 # Global Variables (Outputs)
@@ -1445,11 +1471,11 @@ def process(value):
         StimOri = math.atan2(StimY-PrevY, StimX-PrevX)
       # In the output we have also value.Item1.Item5 which corresponds to the Low Resolution Frame number
       return Tuple.Create(float(value.Item1.Item2),float(StimX),float(StimY),float(StimOri),float(state))</ipy:Script>
+                    </Builder>
                   </Expression>
-                  <Expression xsi:type="Disable">
-                    <Builder xsi:type="ipy:PythonTransform">
-                      <ipy:Name>Protocol</ipy:Name>
-                      <ipy:Script>import math
+                  <Expression xsi:type="ipy:PythonTransform">
+                    <ipy:Name>Protocol</ipy:Name>
+                    <ipy:Script>import math
 from System import Tuple
 
 # Global Variables (Outputs)
@@ -1477,7 +1503,6 @@ def process(value):
     StimOri = FlyOri
     state = 0
     return Tuple.Create(float(value.Item1.Item2),float(StimX),float(StimY),float(StimOri),float(state))</ipy:Script>
-                    </Builder>
                   </Expression>
                   <Expression xsi:type="MemberSelector">
                     <Selector>Item1</Selector>
@@ -1701,8 +1726,8 @@ def process(value):
                     </PropertyMappings>
                   </Expression>
                   <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.DrawCircle.bonsai">
-                    <LocationX>-0.0115157953</LocationX>
-                    <LocationY>-0.3107776</LocationY>
+                    <LocationX>0.462303936</LocationX>
+                    <LocationY>-0.236581966</LocationY>
                     <Layer>0</Layer>
                     <Diameter>0.0581395365</Diameter>
                     <ColorR>0</ColorR>
@@ -1803,7 +1828,7 @@ it.Item1.Timestamp as Time)</scr:Expression>
                           <Name>Fly</Name>
                         </Expression>
                         <Expression xsi:type="io:CsvWriter">
-                          <io:FileName>C:\Users\ALBINO\Desktop\20230330\Parallel30mms_Fly_.csv</io:FileName>
+                          <io:FileName>C:\Users\ALBINO\Desktop\20230330\Parallel40mms_Fly_.csv</io:FileName>
                           <io:Append>false</io:Append>
                           <io:Overwrite>false</io:Overwrite>
                           <io:Suffix>FileCount</io:Suffix>
@@ -1848,7 +1873,7 @@ it.Item1.Timestamp as Time)</scr:Expression>
                           <Name>Projection</Name>
                         </Expression>
                         <Expression xsi:type="io:CsvWriter">
-                          <io:FileName>C:\Users\ALBINO\Desktop\20230330\Parallel30mms_Stim_.csv</io:FileName>
+                          <io:FileName>C:\Users\ALBINO\Desktop\20230330\Parallel40mms_Stim_.csv</io:FileName>
                           <io:Append>false</io:Append>
                           <io:Overwrite>false</io:Overwrite>
                           <io:Suffix>FileCount</io:Suffix>
@@ -1894,7 +1919,7 @@ it.Item1.Timestamp as Time)</scr:Expression>
                         </Expression>
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="cv:VideoWriter">
-                            <cv:FileName>C:\Users\ALBINO\Desktop\20230330\Parallel30mms_CamL_.avi</cv:FileName>
+                            <cv:FileName>C:\Users\ALBINO\Desktop\20230330\Parallel40mms_CamL_.avi</cv:FileName>
                             <cv:Suffix>FileCount</cv:Suffix>
                             <cv:Buffered>true</cv:Buffered>
                             <cv:Overwrite>false</cv:Overwrite>
@@ -1932,7 +1957,7 @@ it.Item1.Timestamp as Time)</scr:Expression>
                         </Expression>
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="cv:VideoWriter">
-                            <cv:FileName>C:\Users\ALBINO\Desktop\20230330\Parallel30mms_CamH_.avi</cv:FileName>
+                            <cv:FileName>C:\Users\ALBINO\Desktop\20230330\Parallel40mms_CamH_.avi</cv:FileName>
                             <cv:Suffix>FileCount</cv:Suffix>
                             <cv:Buffered>true</cv:Buffered>
                             <cv:Overwrite>false</cv:Overwrite>
