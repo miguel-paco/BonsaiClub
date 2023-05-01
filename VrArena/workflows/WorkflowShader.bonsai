@@ -720,7 +720,7 @@ it.Item6 as NoFlashFrames)</scr:Expression>
                         </Expression>
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="StringProperty">
-                            <Value>20230330</Value>
+                            <Value>20230501</Value>
                           </Combinator>
                         </Expression>
                         <Expression xsi:type="SubscribeSubject">
@@ -1410,12 +1410,14 @@ switch = None               #Used to add or not pi to the angle used to determin
 switch_counter = None       #Used to countdown the number of curved sections before the switch changes
 yi = None                   #Sets the initial stimulus y coordinate for the curved sections. Important since the the position of the target during the curved sections is done relative to the initial position
 ti = None                   #Saves Previous Time Point to Process dt
+dt = None                   #Interval of time since last projected frame
+counter = None
 
 
 @returns(Tuple[float,float,float,float,float])
 def process(value):
     #Load Global Variables
-    global StimX, StimY, StimOri, n, m, state, sign_straight, sign_curve, switch, switch_counter, yi, ti
+    global StimX, StimY, StimOri, n, m, state, sign_straight, sign_curve, switch, switch_counter, yi, ti, dt, counter
     
     # Close Loop Input
     FlyX = value.Item1.Item3      #Tracked Fly X Coordinate in Millimeters
@@ -1434,10 +1436,15 @@ def process(value):
     # Protocol Algorithm -------------------------------   
     if ti is None:
       ti = t
+      counter = 0
+      dt = 0
       return Tuple.Create(float(value.Item1.Item2),float.NaN,float.NaN,float.NaN,float.NaN)
     else:
       # Time Interval
-      dt = t - ti                   #Interval of time since last projected frame
+      if counter &lt; 10:
+        counter += 1
+      dt = (dt*(counter-1)/counter)+(t - ti)/counter  #makes dt a pseudo-average insted of the actual interval
+      #dt = t - ti                   
       ti = t
       # Protocol Constants
       dd = speed*dt                 #Amount of distance traveled by the stimulus in between projection frames
@@ -1776,8 +1783,8 @@ def process(value):
                     </PropertyMappings>
                   </Expression>
                   <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.DrawCircle.bonsai">
-                    <LocationX>0.294025153</LocationX>
-                    <LocationY>0.008739724</LocationY>
+                    <LocationX>-0.44568336</LocationX>
+                    <LocationY>0.131099164</LocationY>
                     <Layer>0</Layer>
                     <Diameter>0.0568811037</Diameter>
                     <ColorR>0</ColorR>
@@ -1880,7 +1887,7 @@ it.Item1.Value.Item1.TimeDraw as TimeDraw)</scr:Expression>
                           <Name>Fly</Name>
                         </Expression>
                         <Expression xsi:type="io:CsvWriter">
-                          <io:FileName>C:\Users\Administrador\Desktop\20230330\Parallel30mms_Fly_.csv</io:FileName>
+                          <io:FileName>C:\Users\Administrador\Desktop\20230501\Parallel30mms_Fly_.csv</io:FileName>
                           <io:Append>false</io:Append>
                           <io:Overwrite>false</io:Overwrite>
                           <io:Suffix>FileCount</io:Suffix>
@@ -1925,7 +1932,7 @@ it.Item1.Value.Item1.TimeDraw as TimeDraw)</scr:Expression>
                           <Name>Projection</Name>
                         </Expression>
                         <Expression xsi:type="io:CsvWriter">
-                          <io:FileName>C:\Users\Administrador\Desktop\20230330\Parallel30mms_Stim_.csv</io:FileName>
+                          <io:FileName>C:\Users\Administrador\Desktop\20230501\Parallel30mms_Stim_.csv</io:FileName>
                           <io:Append>false</io:Append>
                           <io:Overwrite>false</io:Overwrite>
                           <io:Suffix>FileCount</io:Suffix>
@@ -1971,7 +1978,7 @@ it.Item1.Value.Item1.TimeDraw as TimeDraw)</scr:Expression>
                         </Expression>
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="cv:VideoWriter">
-                            <cv:FileName>C:\Users\Administrador\Desktop\20230330\Parallel30mms_CamL_.avi</cv:FileName>
+                            <cv:FileName>C:\Users\Administrador\Desktop\20230501\Parallel30mms_CamL_.avi</cv:FileName>
                             <cv:Suffix>FileCount</cv:Suffix>
                             <cv:Buffered>true</cv:Buffered>
                             <cv:Overwrite>false</cv:Overwrite>
@@ -2009,7 +2016,7 @@ it.Item1.Value.Item1.TimeDraw as TimeDraw)</scr:Expression>
                         </Expression>
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="cv:VideoWriter">
-                            <cv:FileName>C:\Users\Administrador\Desktop\20230330\Parallel30mms_CamH_.avi</cv:FileName>
+                            <cv:FileName>C:\Users\Administrador\Desktop\20230501\Parallel30mms_CamH_.avi</cv:FileName>
                             <cv:Suffix>FileCount</cv:Suffix>
                             <cv:Buffered>true</cv:Buffered>
                             <cv:Overwrite>false</cv:Overwrite>
