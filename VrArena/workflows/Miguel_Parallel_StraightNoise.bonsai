@@ -43,7 +43,7 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="p1:uEyeCapture">
-                <p1:DeviceId>1</p1:DeviceId>
+                <p1:DeviceId>2</p1:DeviceId>
                 <p1:ConfigFile>C:\Users\Administrador\Desktop\LowResCamParams.ini</p1:ConfigFile>
               </Combinator>
             </Expression>
@@ -59,7 +59,7 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="p1:uEyeCapture">
-                <p1:DeviceId>2</p1:DeviceId>
+                <p1:DeviceId>1</p1:DeviceId>
                 <p1:ConfigFile>C:\Users\Administrador\Desktop\HighResCamParams.ini</p1:ConfigFile>
               </Combinator>
             </Expression>
@@ -542,7 +542,7 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="FloatProperty">
-                <Value>2.5</Value>
+                <Value>2</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
@@ -587,7 +587,7 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Timer">
-                <rx:DueTime>PT5M</rx:DueTime>
+                <rx:DueTime>PT30S</rx:DueTime>
                 <rx:Period>PT0S</rx:Period>
               </Combinator>
             </Expression>
@@ -668,7 +668,7 @@
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="FloatProperty">
-                      <Value>60</Value>
+                      <Value>2</Value>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="Combinator">
@@ -682,7 +682,8 @@ it.Item2 as TurnRadius,
 it.Item3 as StraightLength,
 it.Item4 as Direction,
 it.Item5 as Diameter,
-it.Item6 as NoFlashFrames)</scr:Expression>
+it.Item6 as NoFlashFrames,
+it.Item7 as NoiseLvl)</scr:Expression>
                   </Expression>
                   <Expression xsi:type="rx:BehaviorSubject">
                     <Name>Params</Name>
@@ -729,7 +730,7 @@ it.Item6 as NoFlashFrames)</scr:Expression>
                         </Expression>
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="StringProperty">
-                            <Value>20230501</Value>
+                            <Value>teste</Value>
                           </Combinator>
                         </Expression>
                         <Expression xsi:type="SubscribeSubject">
@@ -752,10 +753,10 @@ it.Item6 as NoFlashFrames)</scr:Expression>
                           <Name>Params</Name>
                         </Expression>
                         <Expression xsi:type="MemberSelector">
-                          <Selector>Speed</Selector>
+                          <Selector>NoiseLvl</Selector>
                         </Expression>
                         <Expression xsi:type="Format">
-                          <Format>{0}mms</Format>
+                          <Format>{0}mm</Format>
                           <Selector>it</Selector>
                         </Expression>
                         <Expression xsi:type="Combinator">
@@ -1487,7 +1488,7 @@ def process(value):
           state = 0
         elif (state==0 and n&gt;=1): 
           StimX += sign*sign_straight*dd
-          bias = random() * noiselvl
+          bias = noiselvl * random()
           n -= 1
         elif (n&lt;1 and (m+1)&lt;k):
           if m==0:
@@ -1514,7 +1515,7 @@ def process(value):
           state = 0
         StimOri = math.atan2(StimY-PrevY, StimX-PrevX)
       # In the output we have also value.Item1.Item5 which corresponds to the Low Resolution Frame number
-      return Tuple.Create(float(value.Item1.Item2),float(StimX),float(StimY),float(StimOri),float(state))</ipy:Script>
+      return Tuple.Create(float(value.Item1.Item2),float(StimX),float(StimY+bias),float(StimOri),float(state))</ipy:Script>
                   </Expression>
                   <Expression xsi:type="MemberSelector">
                     <Selector>Item1</Selector>
@@ -1685,7 +1686,7 @@ def process(value):
                     <ColorR>0</ColorR>
                     <ColorG>0</ColorG>
                     <ColorB>0</ColorB>
-                    <ColorA>1</ColorA>
+                    <ColorA>0</ColorA>
                   </Expression>
                   <Expression xsi:type="GroupWorkflow">
                     <Name>ConvertToProjectionUnits</Name>
@@ -1764,8 +1765,8 @@ def process(value):
                     </PropertyMappings>
                   </Expression>
                   <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.DrawCircle.bonsai">
-                    <LocationX>-0.44568336</LocationX>
-                    <LocationY>0.131099164</LocationY>
+                    <LocationX>0.2855256</LocationX>
+                    <LocationY>-0.370337039</LocationY>
                     <Layer>0</Layer>
                     <Diameter>0.0568811037</Diameter>
                     <ColorR>0</ColorR>
@@ -1868,7 +1869,7 @@ it.Item1.Value.Item1.TimeDraw as TimeDraw)</scr:Expression>
                           <Name>Fly</Name>
                         </Expression>
                         <Expression xsi:type="io:CsvWriter">
-                          <io:FileName>C:\Users\Administrador\Desktop\20230501\Parallel30mms_Fly_.csv</io:FileName>
+                          <io:FileName>C:\Users\Administrador\Desktop\teste\Parallel_StraightNoise2mm_Fly_.csv</io:FileName>
                           <io:Append>false</io:Append>
                           <io:Overwrite>false</io:Overwrite>
                           <io:Suffix>FileCount</io:Suffix>
@@ -1913,7 +1914,7 @@ it.Item1.Value.Item1.TimeDraw as TimeDraw)</scr:Expression>
                           <Name>Projection</Name>
                         </Expression>
                         <Expression xsi:type="io:CsvWriter">
-                          <io:FileName>C:\Users\Administrador\Desktop\20230501\Parallel30mms_Stim_.csv</io:FileName>
+                          <io:FileName>C:\Users\Administrador\Desktop\teste\Parallel_StraightNoise2mm_Stim_.csv</io:FileName>
                           <io:Append>false</io:Append>
                           <io:Overwrite>false</io:Overwrite>
                           <io:Suffix>FileCount</io:Suffix>
@@ -1959,7 +1960,7 @@ it.Item1.Value.Item1.TimeDraw as TimeDraw)</scr:Expression>
                         </Expression>
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="cv:VideoWriter">
-                            <cv:FileName>C:\Users\Administrador\Desktop\20230501\Parallel30mms_CamL_.avi</cv:FileName>
+                            <cv:FileName>C:\Users\Administrador\Desktop\teste\Parallel_StraightNoise2mm_CamL_.avi</cv:FileName>
                             <cv:Suffix>FileCount</cv:Suffix>
                             <cv:Buffered>true</cv:Buffered>
                             <cv:Overwrite>false</cv:Overwrite>
@@ -1997,7 +1998,7 @@ it.Item1.Value.Item1.TimeDraw as TimeDraw)</scr:Expression>
                         </Expression>
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="cv:VideoWriter">
-                            <cv:FileName>C:\Users\Administrador\Desktop\20230501\Parallel30mms_CamH_.avi</cv:FileName>
+                            <cv:FileName>C:\Users\Administrador\Desktop\teste\Parallel_StraightNoise2mm_CamH_.avi</cv:FileName>
                             <cv:Suffix>FileCount</cv:Suffix>
                             <cv:Buffered>true</cv:Buffered>
                             <cv:Overwrite>false</cv:Overwrite>
