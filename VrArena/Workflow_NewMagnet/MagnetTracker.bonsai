@@ -11,7 +11,7 @@
     <Nodes>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="cv:FileCapture">
-          <cv:FileName>..\resources\10L20mms_CamL_1.avi</cv:FileName>
+          <cv:FileName>C:\Users\Utilizador\Desktop\RecTest2\10N20mms_CamL_2.avi</cv:FileName>
           <cv:PlaybackRate>170</cv:PlaybackRate>
           <cv:StartPosition>0</cv:StartPosition>
           <cv:PositionUnits>Frames</cv:PositionUnits>
@@ -231,6 +231,15 @@ it as Fly)</scr:Expression>
           <cv:Method>MajorAxis</cv:Method>
         </Combinator>
       </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Item1</Selector>
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Item2</Selector>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="rx:Zip" />
+      </Expression>
       <Expression xsi:type="ipy:PythonTransform">
         <ipy:Name>FindHead</ipy:Name>
         <ipy:Script>import math
@@ -240,11 +249,10 @@ from OpenCV.Net import Point2f
 from System import Single, Tuple
 
 # Global Variables
-velocity = None
-head = None
-tail = None
-counter = None
-history = None
+centroid = Point2f(float(0),float(0))
+head = Point2f(float(0),float(0))
+tail = Point2f(float(0),float(0))
+history = float(0)
 
 
 def distancesquare(pt1,pt2):
@@ -266,63 +274,39 @@ def cossimilarity(pt1,pt2):
 def dotproduct(pt1,pt2):
   return pt1.X*pt2.X+pt1.Y*pt2.Y
 
-@returns(Tuple[Point2f])
+@returns(Point2f)
 def process(value):
     #Load Global Variables
-    global velocity, head, tail, counter, history
+    global centroid, head, tail, history
     
     pt1 = value.Item1
     pt2 = value.Item2
+    pt3 = value.Item3
+    d = distancesquare(centroid,pt1)
 
-    if math.isnan(pt1.X):
-      return Tuple.Create(Point2f(float.NaN,float.NaN))
+    if distancesquare(pt3, head) &lt; distancesquare(pt3, tail):
+      aux = pt2
+      pt2 = pt3
+      pt3 = aux
+    
+    dCentroid = pt1 - centroid
+    dHead = head - centroid
+    if distancesquare(centroid,pt1) &gt; 1:
+      cossim = cossimilarity(dCentroid,dHead)
+      history = history + 0.2*cossim
     else:
-      if head is None:
-        head = pt1
-        tail = pt2
-        return Tuple.Create(Point2f(float.NaN,float.NaN))
-      else:
-        # If only one point has been seen
-        if velocity is None:
-          if distancesquare(pt1, head) &lt; distancesquare(pt1, tail):
-            velocity = Point2f(pt1.X-head.X,pt1.Y-head.Y)
-            head = pt1
-            tail = pt2
-          else:
-            velocity = Point2f(pt2.X-head.X,pt2.Y-head.Y)
-            head = pt2
-            tail = pt1
-          history = float(0)
-          counter = float(0)
-        # If more then one point has been seen
-        else:
-          bodyOri = Point2f(pt1.X-pt2.X,pt1.Y-pt2.Y)
-          if cossimilarity(bodyOri,velocity) &lt; 0:
-            aux = pt1
-            pt1 = pt2
-            pt2 = aux
-          instantaneousVelocity = Point2f(pt1.X-head.X,pt1.Y-head.Y)
-          distance = math.sqrt(distancesquare(pt1,head))
-          if counter &lt; 8:
-            counter += 1
-          if distance &gt; 0 and abs(cossimilarity(instantaneousVelocity,velocity) &gt; 0.2):
-            history = (history*(counter-1)/counter)+cossimilarity(instantaneousVelocity,velocity)/counter
-            velocity = Point2f(((velocity.X*(counter-1))/counter)+(instantaneousVelocity.X/counter),((velocity.Y*(counter-1))/counter)+(instantaneousVelocity.Y/counter))
-          if history &lt; 0:
-            counter = float(0)
-            history = float(0)
-            velocity = Point2f(pt2.X-head.X,pt2.Y-head.Y)
-            head = pt2
-            tail = pt1 
-          else:
-            head = pt1
-            tail = pt2
-          #velocity = instantaneousVelocity
-        # Flip Y Axis for cartesian referential normalization
-        return Tuple.Create(head)</ipy:Script>
-      </Expression>
-      <Expression xsi:type="MemberSelector">
-        <Selector>Item1</Selector>
+      history = 1
+
+    if history &lt; 0:
+      aux = pt2
+      pt2 = pt3
+      pt3 = aux
+
+    centroid = pt1
+    head = pt2
+    tail = pt3
+
+    return head</ipy:Script>
       </Expression>
       <Expression xsi:type="Disable">
         <Builder xsi:type="GroupWorkflow">
@@ -457,15 +441,15 @@ it.Value.Item6 as TimeAcquisition)</scr:Expression>
       <Edge From="0" To="1" Label="Source1" />
       <Edge From="2" To="3" Label="Source1" />
       <Edge From="3" To="4" Label="Source1" />
-      <Edge From="3" To="41" Label="Source1" />
+      <Edge From="3" To="43" Label="Source1" />
       <Edge From="4" To="7" Label="Source1" />
       <Edge From="4" To="5" Label="Source1" />
       <Edge From="5" To="6" Label="Source1" />
       <Edge From="6" To="7" Label="Source2" />
       <Edge From="7" To="8" Label="Source1" />
-      <Edge From="7" To="38" Label="Source1" />
+      <Edge From="7" To="40" Label="Source1" />
       <Edge From="8" To="9" Label="Source1" />
-      <Edge From="8" To="36" Label="Source1" />
+      <Edge From="8" To="38" Label="Source1" />
       <Edge From="9" To="10" Label="Source1" />
       <Edge From="9" To="18" Label="Source1" />
       <Edge From="10" To="11" Label="Source1" />
@@ -473,40 +457,44 @@ it.Value.Item6 as TimeAcquisition)</scr:Expression>
       <Edge From="12" To="13" Label="Source1" />
       <Edge From="13" To="14" Label="Source1" />
       <Edge From="14" To="15" Label="Source1" />
-      <Edge From="14" To="36" Label="Source4" />
+      <Edge From="14" To="38" Label="Source4" />
       <Edge From="15" To="16" Label="Source1" />
       <Edge From="16" To="17" Label="Source1" />
-      <Edge From="17" To="42" Label="Source5" />
+      <Edge From="17" To="44" Label="Source5" />
       <Edge From="18" To="19" Label="Source1" />
       <Edge From="19" To="20" Label="Source1" />
       <Edge From="20" To="21" Label="Source1" />
       <Edge From="21" To="22" Label="Source1" />
       <Edge From="21" To="26" Label="Source1" />
       <Edge From="22" To="23" Label="Source1" />
-      <Edge From="22" To="36" Label="Source2" />
-      <Edge From="23" To="30" Label="Source1" />
+      <Edge From="22" To="38" Label="Source2" />
+      <Edge From="22" To="29" Label="Source1" />
+      <Edge From="23" To="32" Label="Source1" />
       <Edge From="23" To="24" Label="Source1" />
       <Edge From="24" To="25" Label="Source1" />
-      <Edge From="25" To="42" Label="Source2" />
+      <Edge From="25" To="44" Label="Source2" />
       <Edge From="26" To="27" Label="Source1" />
-      <Edge From="27" To="28" Label="Source1" />
-      <Edge From="28" To="29" Label="Source1" />
-      <Edge From="28" To="36" Label="Source3" />
-      <Edge From="29" To="30" Label="Source2" />
-      <Edge From="29" To="34" Label="Source1" />
+      <Edge From="26" To="28" Label="Source1" />
+      <Edge From="27" To="29" Label="Source2" />
+      <Edge From="28" To="29" Label="Source3" />
+      <Edge From="29" To="30" Label="Source1" />
       <Edge From="30" To="31" Label="Source1" />
-      <Edge From="31" To="32" Label="Source1" />
+      <Edge From="30" To="38" Label="Source3" />
+      <Edge From="31" To="32" Label="Source2" />
+      <Edge From="31" To="36" Label="Source1" />
       <Edge From="32" To="33" Label="Source1" />
-      <Edge From="33" To="42" Label="Source4" />
+      <Edge From="33" To="34" Label="Source1" />
       <Edge From="34" To="35" Label="Source1" />
-      <Edge From="35" To="42" Label="Source3" />
+      <Edge From="35" To="44" Label="Source4" />
       <Edge From="36" To="37" Label="Source1" />
+      <Edge From="37" To="44" Label="Source3" />
       <Edge From="38" To="39" Label="Source1" />
-      <Edge From="39" To="40" Label="Source1" />
-      <Edge From="40" To="42" Label="Source1" />
-      <Edge From="41" To="42" Label="Source6" />
-      <Edge From="42" To="43" Label="Source1" />
-      <Edge From="43" To="44" Label="Source1" />
+      <Edge From="40" To="41" Label="Source1" />
+      <Edge From="41" To="42" Label="Source1" />
+      <Edge From="42" To="44" Label="Source1" />
+      <Edge From="43" To="44" Label="Source6" />
+      <Edge From="44" To="45" Label="Source1" />
+      <Edge From="45" To="46" Label="Source1" />
     </Edges>
   </Workflow>
 </WorkflowBuilder>
