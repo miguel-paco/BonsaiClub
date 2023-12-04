@@ -187,7 +187,7 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="IntProperty">
-                <Value>2</Value>
+                <Value>1</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="PropertyMapping">
@@ -214,12 +214,12 @@
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="p2:CreateDiscreteUniform">
                 <p2:Lower>0</p2:Lower>
-                <p2:Upper>1</p2:Upper>
+                <p2:Upper>0</p2:Upper>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="p2:SampleDistinct">
-                <p2:Count>2</p2:Count>
+                <p2:Count>1</p2:Count>
               </Combinator>
             </Expression>
             <Expression xsi:type="rx:Condition">
@@ -333,7 +333,7 @@
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="rx:Take">
-          <rx:Count>2</rx:Count>
+          <rx:Count>1</rx:Count>
         </Combinator>
       </Expression>
       <Expression xsi:type="rx:CreateObservable">
@@ -345,7 +345,7 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Timer">
-                <rx:DueTime>PT30S</rx:DueTime>
+                <rx:DueTime>PT45S</rx:DueTime>
                 <rx:Period>PT0S</rx:Period>
               </Combinator>
             </Expression>
@@ -458,7 +458,7 @@ it.Item4 as Direction)</scr:Expression>
                         </Expression>
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="StringProperty">
-                            <Value>20231201</Value>
+                            <Value>20231204</Value>
                           </Combinator>
                         </Expression>
                         <Expression xsi:type="SubscribeSubject">
@@ -474,7 +474,7 @@ it.Item4 as Direction)</scr:Expression>
                         </Expression>
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="StringProperty">
-                            <Value>ReLC11-22_Test</Value>
+                            <Value>Test</Value>
                           </Combinator>
                         </Expression>
                         <Expression xsi:type="SubscribeSubject">
@@ -1051,7 +1051,7 @@ it.Value.Item6 as TimeAcquisition)</scr:Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="rx:Timer">
                       <rx:DueTime>PT0S</rx:DueTime>
-                      <rx:Period>PT0.01S</rx:Period>
+                      <rx:Period>PT0.015S</rx:Period>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="Combinator">
@@ -1179,7 +1179,7 @@ def process(value):
       # Time Interval
       if counter &lt; 10:
         counter += 1
-      dt = (dt*(counter-1)/counter)+(t - ti)/counter  #makes dt a pseudo-average insted of the actual interval
+      dt = 0.015 #(dt*(counter-1)/counter)+(t - ti)/counter  #makes dt a pseudo-average insted of the actual interval
       #dt = t - ti                   
       ti = t
       # Protocol Constants
@@ -1389,7 +1389,7 @@ it.Timestamp as TimeProjection)</scr:Expression>
                           <Name>Fly</Name>
                         </Expression>
                         <Expression xsi:type="io:CsvWriter">
-                          <io:FileName>C:\Users\Utilizador\Desktop\20231201\ReLC11-22_Test20mms_Fly_.csv</io:FileName>
+                          <io:FileName>C:\Users\Utilizador\Desktop\20231204\Test20mms_Fly_.csv</io:FileName>
                           <io:Append>false</io:Append>
                           <io:Overwrite>false</io:Overwrite>
                           <io:Suffix>FileCount</io:Suffix>
@@ -1434,7 +1434,7 @@ it.Timestamp as TimeProjection)</scr:Expression>
                           <Name>Command</Name>
                         </Expression>
                         <Expression xsi:type="io:CsvWriter">
-                          <io:FileName>C:\Users\Utilizador\Desktop\20231201\ReLC11-22_Test20mms_Stim_.csv</io:FileName>
+                          <io:FileName>C:\Users\Utilizador\Desktop\20231204\Test20mms_Stim_.csv</io:FileName>
                           <io:Append>false</io:Append>
                           <io:Overwrite>false</io:Overwrite>
                           <io:Suffix>FileCount</io:Suffix>
@@ -1480,7 +1480,7 @@ it.Timestamp as TimeProjection)</scr:Expression>
                         </Expression>
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="cv:VideoWriter">
-                            <cv:FileName>C:\Users\Utilizador\Desktop\20231201\ReLC11-22_Test20mms_CamL_.avi</cv:FileName>
+                            <cv:FileName>C:\Users\Utilizador\Desktop\20231204\Test20mms_CamL_.avi</cv:FileName>
                             <cv:Suffix>FileCount</cv:Suffix>
                             <cv:Buffered>true</cv:Buffered>
                             <cv:Overwrite>false</cv:Overwrite>
