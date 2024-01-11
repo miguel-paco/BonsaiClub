@@ -19,7 +19,7 @@
           <gl:Location xsi:nil="true" />
           <gl:WindowBorder>Fixed</gl:WindowBorder>
           <gl:WindowState>Normal</gl:WindowState>
-          <gl:DisplayDevice>Second</gl:DisplayDevice>
+          <gl:DisplayDevice>First</gl:DisplayDevice>
           <gl:TargetRenderFrequency>60</gl:TargetRenderFrequency>
           <gl:TargetUpdateFrequency xsi:nil="true" />
           <gl:RenderState />
