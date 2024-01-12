@@ -1555,10 +1555,10 @@ def process(value):
                     <Name>Draw</Name>
                   </Expression>
                   <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.DrawCircle.bonsai">
-                    <LocationX>-0.542824745</LocationX>
-                    <LocationY>0.0876354948</LocationY>
+                    <LocationX>0.6336838</LocationX>
+                    <LocationY>0.517743</LocationY>
                     <Layer>0</Layer>
-                    <Diameter>0.0550691672</Diameter>
+                    <Diameter>0.051133588</Diameter>
                     <ColorR>0</ColorR>
                     <ColorG>0</ColorG>
                     <ColorB>0</ColorB>

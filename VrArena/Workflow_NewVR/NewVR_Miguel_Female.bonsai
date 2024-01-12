@@ -408,7 +408,7 @@
                         </Expression>
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="StringProperty">
-                            <Value>20240110</Value>
+                            <Value>20240112</Value>
                           </Combinator>
                         </Expression>
                         <Expression xsi:type="SubscribeSubject">
@@ -619,7 +619,7 @@
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="cv:Threshold">
-                      <cv:ThresholdValue>90</cv:ThresholdValue>
+                      <cv:ThresholdValue>70</cv:ThresholdValue>
                       <cv:MaxValue>255</cv:MaxValue>
                       <cv:ThresholdType>BinaryInv</cv:ThresholdType>
                     </Combinator>
@@ -1432,7 +1432,7 @@ def process(value):
                           <Name>Fly</Name>
                         </Expression>
                         <Expression xsi:type="io:CsvWriter">
-                          <io:FileName>C:\Users\ChiappeLab\Desktop\20240110\Female_Fly_.csv</io:FileName>
+                          <io:FileName>C:\Users\ChiappeLab\Desktop\20240112\FemaleConcave_Fly_.csv</io:FileName>
                           <io:Append>false</io:Append>
                           <io:Overwrite>false</io:Overwrite>
                           <io:Suffix>FileCount</io:Suffix>
@@ -1478,7 +1478,7 @@ def process(value):
                         </Expression>
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="cv:VideoWriter">
-                            <cv:FileName>C:\Users\ChiappeLab\Desktop\20240110\Female_CamL_.avi</cv:FileName>
+                            <cv:FileName>C:\Users\ChiappeLab\Desktop\20240112\FemaleConcave_CamL_.avi</cv:FileName>
                             <cv:Suffix>FileCount</cv:Suffix>
                             <cv:Buffered>true</cv:Buffered>
                             <cv:Overwrite>false</cv:Overwrite>
@@ -1516,7 +1516,7 @@ def process(value):
                         </Expression>
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="cv:VideoWriter">
-                            <cv:FileName>C:\Users\ChiappeLab\Desktop\20240110\Female_CamH_.avi</cv:FileName>
+                            <cv:FileName>C:\Users\ChiappeLab\Desktop\20240112\FemaleConcave_CamH_.avi</cv:FileName>
                             <cv:Suffix>FileCount</cv:Suffix>
                             <cv:Buffered>true</cv:Buffered>
                             <cv:Overwrite>false</cv:Overwrite>
