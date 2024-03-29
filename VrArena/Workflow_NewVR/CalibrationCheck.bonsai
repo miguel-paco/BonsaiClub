@@ -640,7 +640,7 @@ it as Diameter)
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="cv:Threshold">
-                      <cv:ThresholdValue>90</cv:ThresholdValue>
+                      <cv:ThresholdValue>70</cv:ThresholdValue>
                       <cv:MaxValue>255</cv:MaxValue>
                       <cv:ThresholdType>BinaryInv</cv:ThresholdType>
                     </Combinator>
@@ -1555,10 +1555,10 @@ def process(value):
                     <Name>Draw</Name>
                   </Expression>
                   <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.DrawCircle.bonsai">
-                    <LocationX>0.6336838</LocationX>
-                    <LocationY>0.517743</LocationY>
+                    <LocationX>-0.375035346</LocationX>
+                    <LocationY>-0.08655335</LocationY>
                     <Layer>0</Layer>
-                    <Diameter>0.051133588</Diameter>
+                    <Diameter>0.0482460521</Diameter>
                     <ColorR>0</ColorR>
                     <ColorG>0</ColorG>
                     <ColorB>0</ColorB>
