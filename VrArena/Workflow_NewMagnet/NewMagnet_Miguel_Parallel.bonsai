@@ -474,7 +474,7 @@
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="IntProperty">
-                      <Value>930</Value>
+                      <Value>30</Value>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="Combinator">
@@ -1282,7 +1282,7 @@ it as Frame)</scr:Expression>
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="FloatProperty">
-                      <Value>5085</Value>
+                      <Value>1182</Value>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="SubscribeSubject">
@@ -1848,7 +1848,7 @@ it.Timestamp as TimeProjection)</scr:Expression>
                           <Name>Fly</Name>
                         </Expression>
                         <Expression xsi:type="io:CsvWriter">
-                          <io:FileName>C:\Users\Utilizador\Desktop\20240306\RecombinantLC10aTest20mms_Fly_.csv</io:FileName>
+                          <io:FileName>C:\Users\Utilizador\Desktop\20240404\ParallelGreen20mms_Fly_.csv</io:FileName>
                           <io:Append>false</io:Append>
                           <io:Overwrite>false</io:Overwrite>
                           <io:Suffix>FileCount</io:Suffix>
@@ -1893,7 +1893,7 @@ it.Timestamp as TimeProjection)</scr:Expression>
                           <Name>Command</Name>
                         </Expression>
                         <Expression xsi:type="io:CsvWriter">
-                          <io:FileName>C:\Users\Utilizador\Desktop\20240306\RecombinantLC10aTest20mms_Stim_.csv</io:FileName>
+                          <io:FileName>C:\Users\Utilizador\Desktop\20240404\ParallelGreen20mms_Stim_.csv</io:FileName>
                           <io:Append>false</io:Append>
                           <io:Overwrite>false</io:Overwrite>
                           <io:Suffix>FileCount</io:Suffix>
@@ -1939,7 +1939,7 @@ it.Timestamp as TimeProjection)</scr:Expression>
                         </Expression>
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="cv:VideoWriter">
-                            <cv:FileName>C:\Users\Utilizador\Desktop\20240306\RecombinantLC10aTest20mms_CamL_.avi</cv:FileName>
+                            <cv:FileName>C:\Users\Utilizador\Desktop\20240404\ParallelGreen20mms_CamL_.avi</cv:FileName>
                             <cv:Suffix>FileCount</cv:Suffix>
                             <cv:Buffered>true</cv:Buffered>
                             <cv:Overwrite>false</cv:Overwrite>
@@ -1990,7 +1990,7 @@ it.Timestamp as TimeProjection)</scr:Expression>
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="IntProperty">
-                      <Value>3</Value>
+                      <Value>1</Value>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="MemberSelector">
@@ -2003,7 +2003,7 @@ it.Timestamp as TimeProjection)</scr:Expression>
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="IntProperty">
-                      <Value>6</Value>
+                      <Value>0</Value>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="Combinator">
@@ -2031,24 +2031,27 @@ def process(value):
     defOpt = value.Item1       
     on = value.Item2.Item1
     off = value.Item2.Item2
-
-    if counter is None:
-      outOpt = defOpt
-      counter = on
-      option = 1
-    else:
-      if (option == 1 and counter == 0):
-        outOpt = bool(False)
-        counter = off
-        option = 0
-      elif (option == 0 and counter == 0):
+    
+    if off&gt;0:
+      if counter is None:
         outOpt = defOpt
         counter = on
         option = 1
-    counter -= 1
-    if counter &lt; 0:
-      counter = 0
-    return outOpt
+      else:
+        if (option == 1 and counter == 0):
+          outOpt = bool(False)
+          counter = off
+          option = 0
+        elif (option == 0 and counter == 0):
+          outOpt = defOpt
+          counter = on
+          option = 1
+      counter -= 1
+      if counter &lt; 0:
+        counter = 0
+      return outOpt
+    else:
+      return defOpt
 </ipy:Script>
                   </Expression>
                   <Expression xsi:type="Combinator">
@@ -2186,7 +2189,7 @@ def process(value):
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="rx:Skip">
-                      <rx:Count>60</rx:Count>
+                      <rx:Count>30</rx:Count>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="Combinator">
