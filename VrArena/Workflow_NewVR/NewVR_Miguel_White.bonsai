@@ -8,8 +8,8 @@
                  xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System"
                  xmlns:scr="clr-namespace:Bonsai.Scripting.Expressions;assembly=Bonsai.Scripting.Expressions"
                  xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision"
-                 xmlns:ipy="clr-namespace:Bonsai.Scripting.IronPython;assembly=Bonsai.Scripting.IronPython"
                  xmlns:p2="clr-namespace:;assembly=Extensions"
+                 xmlns:ipy="clr-namespace:Bonsai.Scripting.IronPython;assembly=Bonsai.Scripting.IronPython"
                  xmlns:pal="clr-namespace:Bonsai.PulsePal;assembly=Bonsai.PulsePal"
                  xmlns:ard="clr-namespace:Bonsai.Arduino;assembly=Bonsai.Arduino"
                  xmlns="https://bonsai-rx.org/2018/workflow">
@@ -353,7 +353,7 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Timer">
-                <rx:DueTime>PT15M30S</rx:DueTime>
+                <rx:DueTime>PT30S</rx:DueTime>
                 <rx:Period>PT0S</rx:Period>
               </Combinator>
             </Expression>
@@ -449,7 +449,7 @@ it.Item3 as OffFrames)</scr:Expression>
                         </Expression>
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="StringProperty">
-                            <Value>20240419</Value>
+                            <Value>teste</Value>
                           </Combinator>
                         </Expression>
                         <Expression xsi:type="SubscribeSubject">
@@ -465,7 +465,7 @@ it.Item3 as OffFrames)</scr:Expression>
                         </Expression>
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="StringProperty">
-                            <Value>FemaleConcaveGreen</Value>
+                            <Value>WhiteGreen</Value>
                           </Combinator>
                         </Expression>
                         <Expression xsi:type="Combinator">
@@ -567,257 +567,76 @@ it.Item3 as OffFrames)</scr:Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="cv:BinaryRegionAnalysis" />
                   </Expression>
-                  <Expression xsi:type="rx:SelectMany">
-                    <Name>2LargestBinaryRegions</Name>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="cv:LargestBinaryRegion" />
+                  </Expression>
+                  <Expression xsi:type="MemberSelector">
+                    <Selector>Centroid</Selector>
+                  </Expression>
+                  <Expression xsi:type="GroupWorkflow">
+                    <Name>ConvertToMm</Name>
                     <Workflow>
                       <Nodes>
+                        <Expression xsi:type="SubscribeSubject">
+                          <Name>PX2MM</Name>
+                        </Expression>
                         <Expression xsi:type="WorkflowInput">
                           <Name>Source1</Name>
                         </Expression>
-                        <Expression xsi:type="Combinator">
-                          <Combinator xsi:type="cv:SortBinaryRegions" />
+                        <Expression xsi:type="MemberSelector">
+                          <Selector>X</Selector>
                         </Expression>
-                        <Expression xsi:type="Combinator">
-                          <Combinator xsi:type="cv:TakeBinaryRegions">
-                            <cv:Count>2</cv:Count>
-                          </Combinator>
-                        </Expression>
-                        <Expression xsi:type="Combinator">
-                          <Combinator xsi:type="rx:Concat" />
-                        </Expression>
-                        <Expression xsi:type="Combinator">
-                          <Combinator xsi:type="cv:Centroid" />
-                        </Expression>
-                        <Expression xsi:type="Combinator">
-                          <Combinator xsi:type="cv:BinaryRegionExtremes">
-                            <cv:Method>MajorAxis</cv:Method>
-                          </Combinator>
+                        <Expression xsi:type="MemberSelector">
+                          <Selector>Y</Selector>
                         </Expression>
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="rx:Zip" />
                         </Expression>
                         <Expression xsi:type="Combinator">
-                          <Combinator xsi:type="rx:ToArray" />
+                          <Combinator xsi:type="rx:WithLatestFrom" />
+                        </Expression>
+                        <Expression xsi:type="Combinator">
+                          <Combinator xsi:type="p2:UnitTransform" />
                         </Expression>
                         <Expression xsi:type="ipy:PythonTransform">
-                          <ipy:Name>CheckMissTracking</ipy:Name>
+                          <ipy:Name>ConvertToPoint2f</ipy:Name>
                           <ipy:Script>import clr
 clr.AddReference("OpenCV.Net")
-from OpenCV.Net import *
-from System import Tuple
+from OpenCV.Net import Point2f
 
-nanpoint = Point2f(float.NaN,float.NaN)
-
-@returns(Tuple[Tuple[Point2f,Point2f,Point2f],Tuple[Point2f,Point2f,Point2f]])
+@returns(Point2f)
 def process(value):
-
-  if len(value) == 0:
-    return Tuple.Create(Tuple.Create(nanpoint,nanpoint,nanpoint),
-                        Tuple.Create(nanpoint,nanpoint,nanpoint))
-  elif len(value) == 1:
-    return Tuple.Create(Tuple.Create(value[0].Item1,value[0].Item2.Item1,value[0].Item2.Item2),
-                        Tuple.Create(nanpoint,nanpoint,nanpoint))
-  else:
-    return Tuple.Create(Tuple.Create(value[0].Item1,value[0].Item2.Item1,value[0].Item2.Item2),
-                        Tuple.Create(value[1].Item1,value[1].Item2.Item1,value[1].Item2.Item2))
-</ipy:Script>
-                        </Expression>
-                        <Expression xsi:type="MemberSelector">
-                          <Selector>Item1</Selector>
-                        </Expression>
-                        <Expression xsi:type="scr:ExpressionTransform">
-                          <scr:Name>Rename Var</scr:Name>
-                          <scr:Expression>New(
-it.Item1 as Centroid,
-it.Item2 as MajorAxisExtreme1,
-it.Item3 as MajorAxisExtreme2)
-</scr:Expression>
-                        </Expression>
-                        <Expression xsi:type="MemberSelector">
-                          <Selector>Item2</Selector>
-                        </Expression>
-                        <Expression xsi:type="scr:ExpressionTransform">
-                          <scr:Name>Rename Var</scr:Name>
-                          <scr:Expression>New(
-it.Item1 as Centroid,
-it.Item2 as MajorAxisExtreme1,
-it.Item3 as MajorAxisExtreme2)
-</scr:Expression>
-                        </Expression>
-                        <Expression xsi:type="Combinator">
-                          <Combinator xsi:type="rx:Zip" />
+  return Point2f(value.Item1,value.Item2)</ipy:Script>
                         </Expression>
                         <Expression xsi:type="WorkflowOutput" />
                       </Nodes>
                       <Edges>
-                        <Edge From="0" To="1" Label="Source1" />
+                        <Edge From="0" To="5" Label="Source2" />
                         <Edge From="1" To="2" Label="Source1" />
-                        <Edge From="2" To="3" Label="Source1" />
-                        <Edge From="3" To="4" Label="Source1" />
-                        <Edge From="3" To="5" Label="Source1" />
-                        <Edge From="4" To="6" Label="Source1" />
-                        <Edge From="5" To="6" Label="Source2" />
+                        <Edge From="1" To="3" Label="Source1" />
+                        <Edge From="2" To="4" Label="Source1" />
+                        <Edge From="3" To="4" Label="Source2" />
+                        <Edge From="4" To="5" Label="Source1" />
+                        <Edge From="5" To="6" Label="Source1" />
                         <Edge From="6" To="7" Label="Source1" />
                         <Edge From="7" To="8" Label="Source1" />
-                        <Edge From="8" To="9" Label="Source1" />
-                        <Edge From="8" To="11" Label="Source1" />
-                        <Edge From="9" To="10" Label="Source1" />
-                        <Edge From="10" To="13" Label="Source1" />
-                        <Edge From="11" To="12" Label="Source1" />
-                        <Edge From="12" To="13" Label="Source2" />
-                        <Edge From="13" To="14" Label="Source1" />
                       </Edges>
                     </Workflow>
                   </Expression>
-                  <Expression xsi:type="ipy:PythonTransform">
-                    <ipy:Name>DetectFemale</ipy:Name>
-                    <ipy:Script>import math
-import clr
-clr.AddReference("OpenCV.Net")
-from OpenCV.Net import Point2f
-from System import Single, Tuple
-
-# Global Variables
-smallPos = Point2f(float(0),float(0))
-bigPos = Point2f(float(0),float(0))
-smallHis = float(0)
-bigHis = float(0)
-check = float(25)
-
-def distancesquare(pt1,pt2):
-  dx = (pt2.X - pt1.X)
-  dy = (pt2.Y - pt1.Y)
-  return dx * dx + dy * dy
-
-@returns(Tuple[Tuple[Point2f,Point2f,Point2f],Tuple[Point2f,Point2f,Point2f]])
-def process(value):
-  #Load Global Variables
-  global smallPos, bigPos, smallHis, bigHis, check
-
-  bigFly = value.Item1.Centroid
-  bigPt1 = value.Item1.MajorAxisExtreme1
-  bigPt2 = value.Item1.MajorAxisExtreme2
-  smallFly = value.Item2.Centroid
-  smallPt1 = value.Item2.MajorAxisExtreme1
-  smallPt2 = value.Item2.MajorAxisExtreme2
-
-  if distancesquare(bigFly,bigPos) &gt; distancesquare(smallFly,bigPos):
-    auxFly = bigFly
-    auxPt1 = bigPt1
-    auxPt2 = bigPt2
-    bigFly = smallFly
-    bigPt1 = smallPt1
-    bigPt2 = smallPt2
-    smallFly = auxFly
-    smallPt1 = auxPt1
-    smallPt2 = auxPt2
-  
-  bigLength = distancesquare(bigPt1,bigPt2)
-  smallLength = distancesquare(smallPt1,smallPt2)
-  if bigHis == 0:
-    bigHis = bigLength
-  if smallHis == 0:
-    smallHis = smallLength
-  dnow = distancesquare(Point2f(bigHis,smallHis),Point2f(bigLength,smallLength))
-  dflip = distancesquare(Point2f(smallHis,bigHis),Point2f(bigLength,smallLength))
-  if dnow &gt; dflip:
-    check = check + 1
-  if check == 25:
-    auxFly = bigFly
-    auxPt1 = bigPt1
-    auxPt2 = bigPt2
-    bigFly = smallFly
-    bigPt1 = smallPt1
-    bigPt2 = smallPt2
-    smallFly = auxFly
-    smallPt1 = auxPt1
-    smallPt2 = auxPt2
-    bigLength = distancesquare(bigPt1,bigPt2)
-    smallLength = distancesquare(smallPt1,smallPt2)
-    check = 0
-  bigHis = bigHis * 0.95 + bigLength * 0.05
-  smallHis = smallHis * 0.95 + smallLength * 0.05
-  
-  bigPos = bigFly
-  smallPos = smallFly
-  
-  return Tuple.Create(Tuple.Create(smallPos,smallPt1,smallPt2),
-                        Tuple.Create(bigFly,bigPt1,bigPt2))</ipy:Script>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="cv:BinaryRegionExtremes">
+                      <cv:Method>MajorAxis</cv:Method>
+                    </Combinator>
                   </Expression>
                   <Expression xsi:type="MemberSelector">
                     <Selector>Item1</Selector>
                   </Expression>
-                  <Expression xsi:type="ipy:PythonTransform">
-                    <ipy:Name>FindHead</ipy:Name>
-                    <ipy:Script>import math
-import clr
-clr.AddReference("OpenCV.Net")
-from OpenCV.Net import Point2f
-from System import Single, Tuple
-
-# Global Variables
-centroid = Point2f(float(0),float(0))
-head = Point2f(float(0),float(0))
-tail = Point2f(float(0),float(0))
-history = float(0)
-
-
-def distancesquare(pt1,pt2):
-  dx = (pt2.X - pt1.X)
-  dy = (pt2.Y - pt1.Y)
-  return dx * dx + dy * dy
-
-def angleline(pt1,pt2):
-  dx = (pt2.X - pt1.X)
-  dy = (pt2.Y - pt1.Y)
-  return math.atan2(dy, dx)
-
-def cossimilarity(pt1,pt2):
-  if (dotproduct(pt1,pt1)*dotproduct(pt2,pt2)) == 0:
-    return float(1)
-  else:
-    return float(dotproduct(pt1,pt2)/(math.sqrt(dotproduct(pt1,pt1))*math.sqrt(dotproduct(pt2,pt2))))
-
-def dotproduct(pt1,pt2):
-  return pt1.X*pt2.X+pt1.Y*pt2.Y
-
-@returns(Point2f)
-def process(value):
-    #Load Global Variables
-    global centroid, head, tail, history
-    
-    pt1 = value.Item1
-    pt2 = value.Item2
-    pt3 = value.Item3
-    d = distancesquare(centroid,pt1)
-
-    if distancesquare(pt3, head) &lt; distancesquare(pt3, tail):
-      aux = pt2
-      pt2 = pt3
-      pt3 = aux
-    
-    dCentroid = pt1 - centroid
-    dHead = head - centroid
-    if distancesquare(centroid,pt1) &gt; 1:
-      cossim = cossimilarity(dCentroid,dHead)
-      history = history + 0.2*cossim
-    else:
-      history = 1
-
-    if history &lt; 0:
-      aux = pt2
-      pt2 = pt3
-      pt3 = aux
-
-    centroid = pt1
-    head = pt2
-    tail = pt3
-
-    return head</ipy:Script>
-                  </Expression>
                   <Expression xsi:type="MemberSelector">
                     <Selector>Item2</Selector>
                   </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="rx:Zip" />
+                  </Expression>
                   <Expression xsi:type="ipy:PythonTransform">
                     <ipy:Name>FindHead</ipy:Name>
                     <ipy:Script>import math
@@ -885,194 +704,6 @@ def process(value):
     tail = pt3
 
     return head</ipy:Script>
-                  </Expression>
-                  <Expression xsi:type="MemberSelector">
-                    <Selector>Item1.Item1</Selector>
-                  </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="rx:Zip" />
-                  </Expression>
-                  <Expression xsi:type="scr:ExpressionTransform">
-                    <scr:Name>Rename Var</scr:Name>
-                    <scr:Expression>New(
-it.Item1 as Centroid,
-it.Item2 as Head)
-</scr:Expression>
-                  </Expression>
-                  <Expression xsi:type="MemberSelector">
-                    <Selector>Centroid</Selector>
-                  </Expression>
-                  <Expression xsi:type="GroupWorkflow">
-                    <Name>ConvertToMm</Name>
-                    <Workflow>
-                      <Nodes>
-                        <Expression xsi:type="SubscribeSubject">
-                          <Name>PX2MM</Name>
-                        </Expression>
-                        <Expression xsi:type="WorkflowInput">
-                          <Name>Source1</Name>
-                        </Expression>
-                        <Expression xsi:type="MemberSelector">
-                          <Selector>X</Selector>
-                        </Expression>
-                        <Expression xsi:type="MemberSelector">
-                          <Selector>Y</Selector>
-                        </Expression>
-                        <Expression xsi:type="Combinator">
-                          <Combinator xsi:type="rx:Zip" />
-                        </Expression>
-                        <Expression xsi:type="Combinator">
-                          <Combinator xsi:type="rx:WithLatestFrom" />
-                        </Expression>
-                        <Expression xsi:type="Combinator">
-                          <Combinator xsi:type="p2:UnitTransform" />
-                        </Expression>
-                        <Expression xsi:type="ipy:PythonTransform">
-                          <ipy:Name>ConvertToPoint2f</ipy:Name>
-                          <ipy:Script>import clr
-clr.AddReference("OpenCV.Net")
-from OpenCV.Net import Point2f
-
-@returns(Point2f)
-def process(value):
-  return Point2f(value.Item1,value.Item2)</ipy:Script>
-                        </Expression>
-                        <Expression xsi:type="WorkflowOutput" />
-                      </Nodes>
-                      <Edges>
-                        <Edge From="0" To="5" Label="Source2" />
-                        <Edge From="1" To="2" Label="Source1" />
-                        <Edge From="1" To="3" Label="Source1" />
-                        <Edge From="2" To="4" Label="Source1" />
-                        <Edge From="3" To="4" Label="Source2" />
-                        <Edge From="4" To="5" Label="Source1" />
-                        <Edge From="5" To="6" Label="Source1" />
-                        <Edge From="6" To="7" Label="Source1" />
-                        <Edge From="7" To="8" Label="Source1" />
-                      </Edges>
-                    </Workflow>
-                  </Expression>
-                  <Expression xsi:type="MemberSelector">
-                    <Selector>Head</Selector>
-                  </Expression>
-                  <Expression xsi:type="GroupWorkflow">
-                    <Name>ConvertToMm</Name>
-                    <Workflow>
-                      <Nodes>
-                        <Expression xsi:type="SubscribeSubject">
-                          <Name>PX2MM</Name>
-                        </Expression>
-                        <Expression xsi:type="WorkflowInput">
-                          <Name>Source1</Name>
-                        </Expression>
-                        <Expression xsi:type="MemberSelector">
-                          <Selector>X</Selector>
-                        </Expression>
-                        <Expression xsi:type="MemberSelector">
-                          <Selector>Y</Selector>
-                        </Expression>
-                        <Expression xsi:type="Combinator">
-                          <Combinator xsi:type="rx:Zip" />
-                        </Expression>
-                        <Expression xsi:type="Combinator">
-                          <Combinator xsi:type="rx:WithLatestFrom" />
-                        </Expression>
-                        <Expression xsi:type="Combinator">
-                          <Combinator xsi:type="p2:UnitTransform" />
-                        </Expression>
-                        <Expression xsi:type="ipy:PythonTransform">
-                          <ipy:Name>ConvertToPoint2f</ipy:Name>
-                          <ipy:Script>import clr
-clr.AddReference("OpenCV.Net")
-from OpenCV.Net import Point2f
-
-@returns(Point2f)
-def process(value):
-  return Point2f(value.Item1,value.Item2)</ipy:Script>
-                        </Expression>
-                        <Expression xsi:type="WorkflowOutput" />
-                      </Nodes>
-                      <Edges>
-                        <Edge From="0" To="5" Label="Source2" />
-                        <Edge From="1" To="2" Label="Source1" />
-                        <Edge From="1" To="3" Label="Source1" />
-                        <Edge From="2" To="4" Label="Source1" />
-                        <Edge From="3" To="4" Label="Source2" />
-                        <Edge From="4" To="5" Label="Source1" />
-                        <Edge From="5" To="6" Label="Source1" />
-                        <Edge From="6" To="7" Label="Source1" />
-                        <Edge From="7" To="8" Label="Source1" />
-                      </Edges>
-                    </Workflow>
-                  </Expression>
-                  <Expression xsi:type="MemberSelector">
-                    <Selector>Item2.Item1</Selector>
-                  </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="rx:Zip" />
-                  </Expression>
-                  <Expression xsi:type="scr:ExpressionTransform">
-                    <scr:Name>Rename Var</scr:Name>
-                    <scr:Expression>New(
-it.Item1 as Centroid,
-it.Item2 as Head)
-</scr:Expression>
-                  </Expression>
-                  <Expression xsi:type="MemberSelector">
-                    <Selector>Centroid</Selector>
-                  </Expression>
-                  <Expression xsi:type="GroupWorkflow">
-                    <Name>ConvertToMm</Name>
-                    <Workflow>
-                      <Nodes>
-                        <Expression xsi:type="SubscribeSubject">
-                          <Name>PX2MM</Name>
-                        </Expression>
-                        <Expression xsi:type="WorkflowInput">
-                          <Name>Source1</Name>
-                        </Expression>
-                        <Expression xsi:type="MemberSelector">
-                          <Selector>X</Selector>
-                        </Expression>
-                        <Expression xsi:type="MemberSelector">
-                          <Selector>Y</Selector>
-                        </Expression>
-                        <Expression xsi:type="Combinator">
-                          <Combinator xsi:type="rx:Zip" />
-                        </Expression>
-                        <Expression xsi:type="Combinator">
-                          <Combinator xsi:type="rx:WithLatestFrom" />
-                        </Expression>
-                        <Expression xsi:type="Combinator">
-                          <Combinator xsi:type="p2:UnitTransform" />
-                        </Expression>
-                        <Expression xsi:type="ipy:PythonTransform">
-                          <ipy:Name>ConvertToPoint2f</ipy:Name>
-                          <ipy:Script>import clr
-clr.AddReference("OpenCV.Net")
-from OpenCV.Net import Point2f
-
-@returns(Point2f)
-def process(value):
-  return Point2f(value.Item1,value.Item2)</ipy:Script>
-                        </Expression>
-                        <Expression xsi:type="WorkflowOutput" />
-                      </Nodes>
-                      <Edges>
-                        <Edge From="0" To="5" Label="Source2" />
-                        <Edge From="1" To="2" Label="Source1" />
-                        <Edge From="1" To="3" Label="Source1" />
-                        <Edge From="2" To="4" Label="Source1" />
-                        <Edge From="3" To="4" Label="Source2" />
-                        <Edge From="4" To="5" Label="Source1" />
-                        <Edge From="5" To="6" Label="Source1" />
-                        <Edge From="6" To="7" Label="Source1" />
-                        <Edge From="7" To="8" Label="Source1" />
-                      </Edges>
-                    </Workflow>
-                  </Expression>
-                  <Expression xsi:type="MemberSelector">
-                    <Selector>Head</Selector>
                   </Expression>
                   <Expression xsi:type="GroupWorkflow">
                     <Name>ConvertToMm</Name>
@@ -1133,7 +764,7 @@ def process(value):
                     <Combinator xsi:type="rx:Zip" />
                   </Expression>
                   <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="p2:TwoFlyVisualizer" />
+                    <Combinator xsi:type="p2:HeadVisualizer" />
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="cv:MaskPolygon">
@@ -1298,7 +929,7 @@ it as GreenLED)</scr:Expression>
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="FloatProperty">
-                      <Value>79056</Value>
+                      <Value>2549</Value>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="Divide">
@@ -1330,11 +961,9 @@ it.Value.Item1.Item1.Item2 as LowResFrame,
 it.Value.Item1.Item2 as HighResFrame,
 it.Value.Item2 as MaleCentroid,
 it.Value.Item3 as MaleHead,
-it.Value.Item4 as FemaleCentroid,
-it.Value.Item5 as FemaleHead,
-it.Value.Item7 as GreenLED,
+it.Value.Item5 as GreenLED,
 it.Timestamp as TimeTracking,
-it.Value.Item6 as TimeLowRes)</scr:Expression>
+it.Value.Item4 as TimeLowRes)</scr:Expression>
                   </Expression>
                   <Expression xsi:type="rx:BehaviorSubject">
                     <Name>Fly</Name>
@@ -1343,71 +972,58 @@ it.Value.Item6 as TimeLowRes)</scr:Expression>
                 <Edges>
                   <Edge From="0" To="1" Label="Source1" />
                   <Edge From="1" To="2" Label="Source1" />
-                  <Edge From="1" To="52" Label="Source1" />
+                  <Edge From="1" To="41" Label="Source1" />
                   <Edge From="2" To="5" Label="Source1" />
                   <Edge From="2" To="3" Label="Source1" />
                   <Edge From="3" To="4" Label="Source1" />
                   <Edge From="4" To="5" Label="Source2" />
-                  <Edge From="4" To="47" Label="Source1" />
+                  <Edge From="4" To="36" Label="Source1" />
                   <Edge From="5" To="6" Label="Source1" />
-                  <Edge From="5" To="46" Label="Source1" />
+                  <Edge From="5" To="35" Label="Source1" />
                   <Edge From="6" To="7" Label="Source1" />
                   <Edge From="7" To="8" Label="Source1" />
-                  <Edge From="7" To="31" Label="Source1" />
-                  <Edge From="7" To="34" Label="Source1" />
+                  <Edge From="7" To="20" Label="Source1" />
+                  <Edge From="7" To="23" Label="Source1" />
                   <Edge From="8" To="9" Label="Source1" />
                   <Edge From="9" To="10" Label="Source1" />
                   <Edge From="10" To="11" Label="Source1" />
                   <Edge From="11" To="12" Label="Source1" />
-                  <Edge From="12" To="13" Label="Source1" />
-                  <Edge From="12" To="15" Label="Source1" />
+                  <Edge From="11" To="14" Label="Source1" />
                   <Edge From="12" To="17" Label="Source1" />
-                  <Edge From="12" To="24" Label="Source1" />
-                  <Edge From="13" To="14" Label="Source1" />
-                  <Edge From="14" To="18" Label="Source2" />
-                  <Edge From="15" To="16" Label="Source1" />
-                  <Edge From="16" To="25" Label="Source2" />
+                  <Edge From="12" To="13" Label="Source1" />
+                  <Edge From="12" To="21" Label="Source2" />
+                  <Edge From="13" To="42" Label="Source2" />
+                  <Edge From="14" To="15" Label="Source1" />
+                  <Edge From="14" To="16" Label="Source1" />
+                  <Edge From="15" To="17" Label="Source2" />
+                  <Edge From="16" To="17" Label="Source3" />
                   <Edge From="17" To="18" Label="Source1" />
-                  <Edge From="18" To="32" Label="Source2" />
                   <Edge From="18" To="19" Label="Source1" />
-                  <Edge From="19" To="20" Label="Source1" />
-                  <Edge From="19" To="22" Label="Source1" />
+                  <Edge From="18" To="21" Label="Source3" />
+                  <Edge From="19" To="42" Label="Source3" />
                   <Edge From="20" To="21" Label="Source1" />
-                  <Edge From="21" To="53" Label="Source2" />
-                  <Edge From="22" To="23" Label="Source1" />
-                  <Edge From="23" To="53" Label="Source3" />
+                  <Edge From="21" To="22" Label="Source1" />
+                  <Edge From="23" To="24" Label="Source1" />
                   <Edge From="24" To="25" Label="Source1" />
-                  <Edge From="25" To="32" Label="Source3" />
                   <Edge From="25" To="26" Label="Source1" />
                   <Edge From="26" To="27" Label="Source1" />
-                  <Edge From="26" To="29" Label="Source1" />
                   <Edge From="27" To="28" Label="Source1" />
-                  <Edge From="28" To="53" Label="Source4" />
+                  <Edge From="28" To="29" Label="Source1" />
                   <Edge From="29" To="30" Label="Source1" />
-                  <Edge From="30" To="53" Label="Source5" />
-                  <Edge From="31" To="32" Label="Source1" />
+                  <Edge From="30" To="31" Label="Source1" />
+                  <Edge From="31" To="42" Label="Source6" />
                   <Edge From="32" To="33" Label="Source1" />
-                  <Edge From="34" To="35" Label="Source1" />
-                  <Edge From="35" To="36" Label="Source1" />
+                  <Edge From="33" To="34" Label="Source1" />
+                  <Edge From="34" To="35" Label="Source2" />
+                  <Edge From="35" To="42" Label="Source1" />
                   <Edge From="36" To="37" Label="Source1" />
                   <Edge From="37" To="38" Label="Source1" />
                   <Edge From="38" To="39" Label="Source1" />
                   <Edge From="39" To="40" Label="Source1" />
-                  <Edge From="40" To="41" Label="Source1" />
-                  <Edge From="41" To="42" Label="Source1" />
-                  <Edge From="42" To="53" Label="Source7" />
+                  <Edge From="41" To="42" Label="Source5" />
+                  <Edge From="42" To="43" Label="Source1" />
                   <Edge From="43" To="44" Label="Source1" />
                   <Edge From="44" To="45" Label="Source1" />
-                  <Edge From="45" To="46" Label="Source2" />
-                  <Edge From="46" To="53" Label="Source1" />
-                  <Edge From="47" To="48" Label="Source1" />
-                  <Edge From="48" To="49" Label="Source1" />
-                  <Edge From="49" To="50" Label="Source1" />
-                  <Edge From="50" To="51" Label="Source1" />
-                  <Edge From="52" To="53" Label="Source6" />
-                  <Edge From="53" To="54" Label="Source1" />
-                  <Edge From="54" To="55" Label="Source1" />
-                  <Edge From="55" To="56" Label="Source1" />
                 </Edges>
               </Workflow>
             </Expression>
@@ -1646,8 +1262,6 @@ it.Value.Item1.LowResFrame as LowResFrame,
 it.Value.Item1.HighResFrame as HighResFrame,
 it.Value.Item1.MaleCentroid as MaleCentroid,
 it.Value.Item1.MaleHead as MaleHead,
-it.Value.Item1.FemaleCentroid as FemaleCentroid,
-it.Value.Item1.FemaleHead as FemaleHead,
 it.Value.Item1.GreenLED as GreenLED,
 it.Value.Item2 as GreenState,
 it.Value.Item1.TimeTracking as TimeTracking,
@@ -1721,7 +1335,7 @@ it.Timestamp as TimeCommand)</scr:Expression>
                           <Name>FlyFinal</Name>
                         </Expression>
                         <Expression xsi:type="io:CsvWriter">
-                          <io:FileName>C:\Users\ChiappeLab\Desktop\20240411\FemaleConcaveGreen_Fly_.csv</io:FileName>
+                          <io:FileName>C:\Users\ChiappeLab\Desktop\teste\WhiteGreen_Fly_.csv</io:FileName>
                           <io:Append>false</io:Append>
                           <io:Overwrite>false</io:Overwrite>
                           <io:Suffix>FileCount</io:Suffix>
@@ -1767,7 +1381,7 @@ it.Timestamp as TimeCommand)</scr:Expression>
                         </Expression>
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="cv:VideoWriter">
-                            <cv:FileName>C:\Users\ChiappeLab\Desktop\20240411\FemaleConcaveGreen_CamL_.avi</cv:FileName>
+                            <cv:FileName>C:\Users\ChiappeLab\Desktop\teste\WhiteGreen_CamL_.avi</cv:FileName>
                             <cv:Suffix>FileCount</cv:Suffix>
                             <cv:Buffered>true</cv:Buffered>
                             <cv:Overwrite>false</cv:Overwrite>
@@ -1805,7 +1419,7 @@ it.Timestamp as TimeCommand)</scr:Expression>
                         </Expression>
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="cv:VideoWriter">
-                            <cv:FileName>C:\Users\ChiappeLab\Desktop\20240411\FemaleConcaveGreen_CamH_.avi</cv:FileName>
+                            <cv:FileName>C:\Users\ChiappeLab\Desktop\teste\WhiteGreen_CamH_.avi</cv:FileName>
                             <cv:Suffix>FileCount</cv:Suffix>
                             <cv:Buffered>true</cv:Buffered>
                             <cv:Overwrite>false</cv:Overwrite>

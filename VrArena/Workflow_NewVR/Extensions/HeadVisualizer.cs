@@ -18,8 +18,8 @@ public class HeadVisualizer
             var image = value.Item1.Clone();
             var centroid = new Point((int)value.Item2.X,(int)value.Item2.Y);
             var head = new Point((int)value.Item3.X,(int)value.Item3.Y);
-            CV.Circle(image, centroid, 1, Scalar.Rgb(0, 0, 0), -1);
-            CV.Circle(image, head, 1, Scalar.Rgb(255, 0, 0), -1);
+            CV.Circle(image, centroid, 1, Scalar.Rgb(255, 0, 0), -1);
+            CV.Circle(image, head, 1, Scalar.Rgb(255, 255, 0), -1);
             return image;
         });
     }
