@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Bonsai.PulsePal.Design</id>
+    <version>0.1.0</version>
+    <title>Bonsai - PulsePal Design Library</title>
+    <authors>Gonçalo Lopes</authors>
+    <owners>Gonçalo Lopes</owners>
+    <licenseUrl>https://bitbucket.org/horizongir/bonsai.neuro/raw/8997ee636785fb092cd2e2100653c1b395c63c5e/LICENSE</licenseUrl>
+    <projectUrl>https://bitbucket.org/horizongir/bonsai.neuro</projectUrl>
+    <iconUrl>https://bitbucket.org/horizongir/bonsai/raw/7aacc64dc4647e57362ab310238591dc197fef0d/Resources/Bonsai.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>Bonsai Design Library containing editor classes for PulsePal configuration.</description>
+    <copyright>Gonçalo Lopes © 2015</copyright>
+    <tags>Bonsai PulsePal Design Pulse Stimulator</tags>
+    <dependencies>
+      <dependency id="Bonsai.Design" version="2.1.2" />
+      <dependency id="Bonsai.PulsePal" version="0.1.0" />
+      <dependency id="Bonsai.System.Design" version="2.1.0" />
+    </dependencies>
+  </metadata>
+</package>

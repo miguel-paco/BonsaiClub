@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Bonsai.PulsePal</id>
+    <version>0.2.0</version>
+    <title>Bonsai - PulsePal Library</title>
+    <authors>Gonçalo Lopes</authors>
+    <licenseUrl>https://bonsai-rx.org/license</licenseUrl>
+    <iconUrl>https://bonsai-rx.org/assets/images/bonsai.png</iconUrl>
+    <description>Bonsai Library containing modules for interfacing with the PulsePal pulse train generator.</description>
+    <copyright>Copyright © Gonçalo Lopes 2021</copyright>
+    <tags>Bonsai Rx PulsePal Pulse Stimulator</tags>
+    <dependencies>
+      <group targetFramework=".NETFramework4.6.2">
+        <dependency id="Bonsai.System" version="2.6.0" exclude="Build,Analyzers" />
+        <dependency id="OpenCV.Net" version="3.3.1" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>

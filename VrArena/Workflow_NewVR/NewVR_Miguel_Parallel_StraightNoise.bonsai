@@ -44,7 +44,7 @@
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="p1:uEyeCapture">
                 <p1:DeviceId>2</p1:DeviceId>
-                <p1:ConfigFile>C:\Users\Administrador\Desktop\LowResCamParams.ini</p1:ConfigFile>
+                <p1:ConfigFile>C:\Users\Concave VR\Desktop\LowResCamParams.ini</p1:ConfigFile>
               </Combinator>
             </Expression>
             <Expression xsi:type="MemberSelector">
@@ -60,7 +60,7 @@
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="p1:uEyeCapture">
                 <p1:DeviceId>1</p1:DeviceId>
-                <p1:ConfigFile>C:\Users\Administrador\Desktop\HighResCamParams.ini</p1:ConfigFile>
+                <p1:ConfigFile>C:\Users\Concave VR\Desktop\HighResCamParams.ini</p1:ConfigFile>
               </Combinator>
             </Expression>
             <Expression xsi:type="MemberSelector">
@@ -85,6 +85,9 @@
         <Name>Screen</Name>
         <Workflow>
           <Nodes>
+            <Expression xsi:type="ExternalizedMapping">
+              <Property Name="DisplayDevice" />
+            </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="gl:CreateWindow">
                 <gl:Width>800</gl:Width>
@@ -97,7 +100,7 @@
                 <gl:Location xsi:nil="true" />
                 <gl:WindowBorder>Fixed</gl:WindowBorder>
                 <gl:WindowState>Normal</gl:WindowState>
-                <gl:DisplayDevice>Second</gl:DisplayDevice>
+                <gl:DisplayDevice>First</gl:DisplayDevice>
                 <gl:TargetRenderFrequency>60</gl:TargetRenderFrequency>
                 <gl:TargetUpdateFrequency>85</gl:TargetUpdateFrequency>
                 <gl:RenderState />
@@ -162,8 +165,9 @@
             <Edge From="0" To="1" Label="Source1" />
             <Edge From="1" To="2" Label="Source1" />
             <Edge From="2" To="3" Label="Source1" />
-            <Edge From="4" To="5" Label="Source1" />
+            <Edge From="3" To="4" Label="Source1" />
             <Edge From="5" To="6" Label="Source1" />
+            <Edge From="6" To="7" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -255,7 +259,7 @@
               <Property Name="FileName" DisplayName="PX2MM" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>..\resources\VRData\VRConversions\PX2MM.txt</io:FileName>
+              <io:FileName>C:\Users\Concave VR\Desktop\VRConversions\PX2MM.txt</io:FileName>
               <io:ListSeparator />
               <io:ScanPattern>%f,%f,%f</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
@@ -311,7 +315,7 @@
               <Property Name="FileName" DisplayName="MM2VL" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>..\resources\VRData\VRConversions\MM2VL.txt</io:FileName>
+              <io:FileName>C:\Users\Concave VR\Desktop\VRConversions\MM2VL.txt</io:FileName>
               <io:ListSeparator />
               <io:ScanPattern>%f,%f,%f</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
@@ -367,7 +371,7 @@
               <Property Name="FileName" DisplayName="MM2VR" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>..\resources\VRData\VRConversions\MM2VR.txt</io:FileName>
+              <io:FileName>C:\Users\Concave VR\Desktop\VRConversions\MM2VR.txt</io:FileName>
               <io:ListSeparator />
               <io:ScanPattern>%f,%f,%f</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
@@ -702,7 +706,7 @@ it.Item7 as NoiseLvl)</scr:Expression>
                         </Expression>
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="StringProperty">
-                            <Value>C:\Users\Administrador\Desktop</Value>
+                            <Value>C:\Users\Concave VR\Desktop</Value>
                           </Combinator>
                         </Expression>
                         <Expression xsi:type="Combinator">
@@ -1686,7 +1690,7 @@ def process(value):
                     <ColorR>0</ColorR>
                     <ColorG>0</ColorG>
                     <ColorB>0</ColorB>
-                    <ColorA>0</ColorA>
+                    <ColorA>1</ColorA>
                   </Expression>
                   <Expression xsi:type="GroupWorkflow">
                     <Name>ConvertToProjectionUnits</Name>
@@ -1765,10 +1769,10 @@ def process(value):
                     </PropertyMappings>
                   </Expression>
                   <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.DrawCircle.bonsai">
-                    <LocationX>0.2855256</LocationX>
-                    <LocationY>-0.370337039</LocationY>
+                    <LocationX>-0.431107</LocationX>
+                    <LocationY>-0.145886153</LocationY>
                     <Layer>0</Layer>
-                    <Diameter>0.0568811037</Diameter>
+                    <Diameter>0.0473251566</Diameter>
                     <ColorR>0</ColorR>
                     <ColorG>0</ColorG>
                     <ColorB>0</ColorB>
@@ -1869,7 +1873,7 @@ it.Item1.Value.Item1.TimeDraw as TimeDraw)</scr:Expression>
                           <Name>Fly</Name>
                         </Expression>
                         <Expression xsi:type="io:CsvWriter">
-                          <io:FileName>C:\Users\Administrador\Desktop\teste\Parallel_StraightNoise2mm_Fly_.csv</io:FileName>
+                          <io:FileName>C:\Users\Concave VR\Desktop\teste\Parallel_StraightNoise2mm_Fly_.csv</io:FileName>
                           <io:Append>false</io:Append>
                           <io:Overwrite>false</io:Overwrite>
                           <io:Suffix>FileCount</io:Suffix>
@@ -1914,7 +1918,7 @@ it.Item1.Value.Item1.TimeDraw as TimeDraw)</scr:Expression>
                           <Name>Projection</Name>
                         </Expression>
                         <Expression xsi:type="io:CsvWriter">
-                          <io:FileName>C:\Users\Administrador\Desktop\teste\Parallel_StraightNoise2mm_Stim_.csv</io:FileName>
+                          <io:FileName>C:\Users\Concave VR\Desktop\teste\Parallel_StraightNoise2mm_Stim_.csv</io:FileName>
                           <io:Append>false</io:Append>
                           <io:Overwrite>false</io:Overwrite>
                           <io:Suffix>FileCount</io:Suffix>
@@ -1960,7 +1964,7 @@ it.Item1.Value.Item1.TimeDraw as TimeDraw)</scr:Expression>
                         </Expression>
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="cv:VideoWriter">
-                            <cv:FileName>C:\Users\Administrador\Desktop\teste\Parallel_StraightNoise2mm_CamL_.avi</cv:FileName>
+                            <cv:FileName>C:\Users\Concave VR\Desktop\teste\Parallel_StraightNoise2mm_CamL_.avi</cv:FileName>
                             <cv:Suffix>FileCount</cv:Suffix>
                             <cv:Buffered>true</cv:Buffered>
                             <cv:Overwrite>false</cv:Overwrite>
@@ -1998,7 +2002,7 @@ it.Item1.Value.Item1.TimeDraw as TimeDraw)</scr:Expression>
                         </Expression>
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="cv:VideoWriter">
-                            <cv:FileName>C:\Users\Administrador\Desktop\teste\Parallel_StraightNoise2mm_CamH_.avi</cv:FileName>
+                            <cv:FileName>C:\Users\Concave VR\Desktop\teste\Parallel_StraightNoise2mm_CamH_.avi</cv:FileName>
                             <cv:Suffix>FileCount</cv:Suffix>
                             <cv:Buffered>true</cv:Buffered>
                             <cv:Overwrite>false</cv:Overwrite>

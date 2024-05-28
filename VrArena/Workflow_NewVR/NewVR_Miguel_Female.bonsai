@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <WorkflowBuilder Version="2.7.1"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                 xmlns:p1="clr-namespace:Bonsai.uEye;assembly=Bonsai.uEye"
+                 xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision"
                  xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
+                 xmlns:p1="clr-namespace:Bonsai.uEye;assembly=Bonsai.uEye"
                  xmlns:gl="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders"
                  xmlns:res="clr-namespace:Bonsai.Resources;assembly=Bonsai.System"
                  xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System"
                  xmlns:scr="clr-namespace:Bonsai.Scripting.Expressions;assembly=Bonsai.Scripting.Expressions"
-                 xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision"
                  xmlns:ipy="clr-namespace:Bonsai.Scripting.IronPython;assembly=Bonsai.Scripting.IronPython"
                  xmlns:p2="clr-namespace:;assembly=Extensions"
                  xmlns:pal="clr-namespace:Bonsai.PulsePal;assembly=Bonsai.PulsePal"
@@ -19,6 +19,23 @@
         <Name>Camera</Name>
         <Workflow>
           <Nodes>
+            <Expression xsi:type="Disable">
+              <Builder xsi:type="Combinator">
+                <Combinator xsi:type="cv:FileCapture">
+                  <cv:FileName>..\resources\VRData\Cam1_1.avi</cv:FileName>
+                  <cv:PlaybackRate>85</cv:PlaybackRate>
+                  <cv:StartPosition>0</cv:StartPosition>
+                  <cv:PositionUnits>Frames</cv:PositionUnits>
+                  <cv:Loop>false</cv:Loop>
+                  <cv:Playing>true</cv:Playing>
+                </Combinator>
+              </Builder>
+            </Expression>
+            <Expression xsi:type="Disable">
+              <Builder xsi:type="rx:PublishSubject">
+                <Name>LowResCamera</Name>
+              </Builder>
+            </Expression>
             <Expression xsi:type="ExternalizedMapping">
               <Property Name="DeviceId" DisplayName="LowResCam" />
               <Property Name="ConfigFile" DisplayName="LowResConfig" />
@@ -26,7 +43,7 @@
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="p1:uEyeCapture">
                 <p1:DeviceId>2</p1:DeviceId>
-                <p1:ConfigFile>C:\Users\ChiappeLab\Desktop\LowResCamParams.ini</p1:ConfigFile>
+                <p1:ConfigFile>C:\Users\Concave VR\Desktop\LowResCamParams.ini</p1:ConfigFile>
               </Combinator>
             </Expression>
             <Expression xsi:type="MemberSelector">
@@ -42,7 +59,7 @@
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="p1:uEyeCapture">
                 <p1:DeviceId>1</p1:DeviceId>
-                <p1:ConfigFile>C:\Users\ChiappeLab\Desktop\HighResCamParams.ini</p1:ConfigFile>
+                <p1:ConfigFile>C:\Users\Concave VR\Desktop\HighResCamParams.ini</p1:ConfigFile>
               </Combinator>
             </Expression>
             <Expression xsi:type="MemberSelector">
@@ -54,11 +71,12 @@
           </Nodes>
           <Edges>
             <Edge From="0" To="1" Label="Source1" />
-            <Edge From="1" To="2" Label="Source1" />
             <Edge From="2" To="3" Label="Source1" />
+            <Edge From="3" To="4" Label="Source1" />
             <Edge From="4" To="5" Label="Source1" />
-            <Edge From="5" To="6" Label="Source1" />
             <Edge From="6" To="7" Label="Source1" />
+            <Edge From="7" To="8" Label="Source1" />
+            <Edge From="8" To="9" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -160,7 +178,7 @@
               <Property Name="FileName" DisplayName="PX2MM" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>C:\Users\ChiappeLab\Desktop\VRConversions\PX2MM.txt</io:FileName>
+              <io:FileName>C:\Users\Concave VR\Desktop\VRConversions\PX2MM.txt</io:FileName>
               <io:ListSeparator />
               <io:ScanPattern>%f,%f,%f</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
@@ -216,7 +234,7 @@
               <Property Name="FileName" DisplayName="MM2VL" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>C:\Users\ChiappeLab\Desktop\VRConversions\MM2VL.txt</io:FileName>
+              <io:FileName>C:\Users\Concave VR\Desktop\VRConversions\MM2VL.txt</io:FileName>
               <io:ListSeparator />
               <io:ScanPattern>%f,%f,%f</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
@@ -272,7 +290,7 @@
               <Property Name="FileName" DisplayName="MM2VR" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>C:\Users\ChiappeLab\Desktop\VRConversions\MM2VR.txt</io:FileName>
+              <io:FileName>C:\Users\Concave VR\Desktop\VRConversions\MM2VR.txt</io:FileName>
               <io:ListSeparator />
               <io:ScanPattern>%f,%f,%f</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
@@ -353,7 +371,7 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Timer">
-                <rx:DueTime>PT15M30S</rx:DueTime>
+                <rx:DueTime>PT1M</rx:DueTime>
                 <rx:Period>PT0S</rx:Period>
               </Combinator>
             </Expression>
@@ -421,7 +439,7 @@ it.Item3 as OffFrames)</scr:Expression>
                         </Expression>
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="StringProperty">
-                            <Value>C:\Users\ChiappeLab\Desktop</Value>
+                            <Value>C:\Users\Concave VR\Desktop</Value>
                           </Combinator>
                         </Expression>
                         <Expression xsi:type="Combinator">
@@ -1298,7 +1316,7 @@ it as GreenLED)</scr:Expression>
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="FloatProperty">
-                      <Value>79056</Value>
+                      <Value>5101</Value>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="Divide">
@@ -1570,7 +1588,7 @@ def process(value):
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="rx:Timer">
-                      <rx:DueTime>PT8M</rx:DueTime>
+                      <rx:DueTime>PT30S</rx:DueTime>
                       <rx:Period>PT0S</rx:Period>
                     </Combinator>
                   </Expression>
@@ -1721,7 +1739,7 @@ it.Timestamp as TimeCommand)</scr:Expression>
                           <Name>FlyFinal</Name>
                         </Expression>
                         <Expression xsi:type="io:CsvWriter">
-                          <io:FileName>C:\Users\ChiappeLab\Desktop\20240411\FemaleConcaveGreen_Fly_.csv</io:FileName>
+                          <io:FileName>C:\Users\Concave VR\Desktop\20240517\FemaleConcaveGreen_Fly_.csv</io:FileName>
                           <io:Append>false</io:Append>
                           <io:Overwrite>false</io:Overwrite>
                           <io:Suffix>FileCount</io:Suffix>
@@ -1767,7 +1785,7 @@ it.Timestamp as TimeCommand)</scr:Expression>
                         </Expression>
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="cv:VideoWriter">
-                            <cv:FileName>C:\Users\ChiappeLab\Desktop\20240411\FemaleConcaveGreen_CamL_.avi</cv:FileName>
+                            <cv:FileName>C:\Users\Concave VR\Desktop\20240517\FemaleConcaveGreen_CamL_.avi</cv:FileName>
                             <cv:Suffix>FileCount</cv:Suffix>
                             <cv:Buffered>true</cv:Buffered>
                             <cv:Overwrite>false</cv:Overwrite>
@@ -1805,7 +1823,7 @@ it.Timestamp as TimeCommand)</scr:Expression>
                         </Expression>
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="cv:VideoWriter">
-                            <cv:FileName>C:\Users\ChiappeLab\Desktop\20240411\FemaleConcaveGreen_CamH_.avi</cv:FileName>
+                            <cv:FileName>C:\Users\Concave VR\Desktop\20240517\FemaleConcaveGreen_CamH_.avi</cv:FileName>
                             <cv:Suffix>FileCount</cv:Suffix>
                             <cv:Buffered>true</cv:Buffered>
                             <cv:Overwrite>false</cv:Overwrite>
@@ -1852,12 +1870,6 @@ it.Timestamp as TimeCommand)</scr:Expression>
         <Combinator xsi:type="rx:Concat" />
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="rx:Delay">
-          <rx:DueTime>PT1S</rx:DueTime>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="WorkflowOutput" />
-      <Expression xsi:type="Combinator">
         <Combinator xsi:type="BooleanProperty">
           <Value>false</Value>
         </Combinator>
@@ -1868,6 +1880,12 @@ it.Timestamp as TimeCommand)</scr:Expression>
           <ard:Pin>10</ard:Pin>
         </Combinator>
       </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="rx:Delay">
+          <rx:DueTime>PT1S</rx:DueTime>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="WorkflowOutput" />
     </Nodes>
     <Edges>
       <Edge From="3" To="4" Label="Source1" />
