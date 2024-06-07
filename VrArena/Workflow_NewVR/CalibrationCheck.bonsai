@@ -24,8 +24,8 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="p1:uEyeCapture">
-                <p1:DeviceId>2</p1:DeviceId>
-                <p1:ConfigFile>C:\Users\ChiappeLab\Desktop\LowResCamParams.ini</p1:ConfigFile>
+                <p1:DeviceId>1</p1:DeviceId>
+                <p1:ConfigFile>C:\Users\Concave VR\Desktop\LowResCamParams.ini</p1:ConfigFile>
               </Combinator>
             </Expression>
             <Expression xsi:type="MemberSelector">
@@ -40,8 +40,8 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="p1:uEyeCapture">
-                <p1:DeviceId>1</p1:DeviceId>
-                <p1:ConfigFile>C:\Users\ChiappeLab\Desktop\HighResCamParams.ini</p1:ConfigFile>
+                <p1:DeviceId>2</p1:DeviceId>
+                <p1:ConfigFile>C:\Users\Concave VR\Desktop\HighResCamParams.ini</p1:ConfigFile>
               </Combinator>
             </Expression>
             <Expression xsi:type="MemberSelector">
@@ -159,7 +159,7 @@
               <Property Name="FileName" DisplayName="PX2MM" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>C:\Users\ChiappeLab\Desktop\VRConversions\PX2MM.txt</io:FileName>
+              <io:FileName>C:\Users\Concave VR\Desktop\VRConversions\PX2MM.txt</io:FileName>
               <io:ListSeparator />
               <io:ScanPattern>%f,%f,%f</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
@@ -215,7 +215,7 @@
               <Property Name="FileName" DisplayName="MM2VL" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>C:\Users\ChiappeLab\Desktop\VRConversions\MM2VL.txt</io:FileName>
+              <io:FileName>C:\Users\Concave VR\Desktop\VRConversions\MM2VL.txt</io:FileName>
               <io:ListSeparator />
               <io:ScanPattern>%f,%f,%f</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
@@ -271,7 +271,7 @@
               <Property Name="FileName" DisplayName="MM2VR" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>C:\Users\ChiappeLab\Desktop\VRConversions\MM2VR.txt</io:FileName>
+              <io:FileName>C:\Users\Concave VR\Desktop\VRConversions\MM2VR.txt</io:FileName>
               <io:ListSeparator />
               <io:ScanPattern>%f,%f,%f</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
@@ -381,7 +381,7 @@
                         </Expression>
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="StringProperty">
-                            <Value>C:\Users\ChiappeLab\Desktop</Value>
+                            <Value>C:\Users\Concave VR\Desktop</Value>
                           </Combinator>
                         </Expression>
                         <Expression xsi:type="Combinator">
