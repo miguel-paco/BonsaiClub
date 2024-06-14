@@ -695,167 +695,167 @@ it as Orientation)</scr:Expression>
                   <Expression xsi:type="MemberSelector">
                     <Selector>Orientation</Selector>
                   </Expression>
-                  <Expression xsi:type="Disable">
-                    <Builder xsi:type="Combinator">
-                      <Combinator xsi:type="cv:MaskPolygon">
-                        <cv:Regions>
-                          <cv:ArrayOfPoint>
-                            <cv:Point>
-                              <cv:X>72</cv:X>
-                              <cv:Y>57</cv:Y>
-                            </cv:Point>
-                            <cv:Point>
-                              <cv:X>72</cv:X>
-                              <cv:Y>57</cv:Y>
-                            </cv:Point>
-                            <cv:Point>
-                              <cv:X>72</cv:X>
-                              <cv:Y>57</cv:Y>
-                            </cv:Point>
-                            <cv:Point>
-                              <cv:X>72</cv:X>
-                              <cv:Y>57</cv:Y>
-                            </cv:Point>
-                          </cv:ArrayOfPoint>
-                          <cv:ArrayOfPoint>
-                            <cv:Point>
-                              <cv:X>376</cv:X>
-                              <cv:Y>420</cv:Y>
-                            </cv:Point>
-                            <cv:Point>
-                              <cv:X>376</cv:X>
-                              <cv:Y>420</cv:Y>
-                            </cv:Point>
-                            <cv:Point>
-                              <cv:X>376</cv:X>
-                              <cv:Y>421</cv:Y>
-                            </cv:Point>
-                            <cv:Point>
-                              <cv:X>376</cv:X>
-                              <cv:Y>421</cv:Y>
-                            </cv:Point>
-                          </cv:ArrayOfPoint>
-                          <cv:ArrayOfPoint>
-                            <cv:Point>
-                              <cv:X>452</cv:X>
-                              <cv:Y>1</cv:Y>
-                            </cv:Point>
-                            <cv:Point>
-                              <cv:X>0</cv:X>
-                              <cv:Y>1</cv:Y>
-                            </cv:Point>
-                            <cv:Point>
-                              <cv:X>0</cv:X>
-                              <cv:Y>467</cv:Y>
-                            </cv:Point>
-                            <cv:Point>
-                              <cv:X>452</cv:X>
-                              <cv:Y>467</cv:Y>
-                            </cv:Point>
-                          </cv:ArrayOfPoint>
-                          <cv:ArrayOfPoint>
-                            <cv:Point>
-                              <cv:X>467</cv:X>
-                              <cv:Y>466</cv:Y>
-                            </cv:Point>
-                            <cv:Point>
-                              <cv:X>452</cv:X>
-                              <cv:Y>466</cv:Y>
-                            </cv:Point>
-                            <cv:Point>
-                              <cv:X>452</cv:X>
-                              <cv:Y>311</cv:Y>
-                            </cv:Point>
-                            <cv:Point>
-                              <cv:X>467</cv:X>
-                              <cv:Y>311</cv:Y>
-                            </cv:Point>
-                          </cv:ArrayOfPoint>
-                          <cv:ArrayOfPoint>
-                            <cv:Point>
-                              <cv:X>467</cv:X>
-                              <cv:Y>1</cv:Y>
-                            </cv:Point>
-                            <cv:Point>
-                              <cv:X>452</cv:X>
-                              <cv:Y>1</cv:Y>
-                            </cv:Point>
-                            <cv:Point>
-                              <cv:X>452</cv:X>
-                              <cv:Y>232</cv:Y>
-                            </cv:Point>
-                            <cv:Point>
-                              <cv:X>467</cv:X>
-                              <cv:Y>232</cv:Y>
-                            </cv:Point>
-                          </cv:ArrayOfPoint>
-                        </cv:Regions>
-                        <cv:MaskType>ToZeroInv</cv:MaskType>
-                        <cv:FillValue>
-                          <cv:Val0>0</cv:Val0>
-                          <cv:Val1>0</cv:Val1>
-                          <cv:Val2>0</cv:Val2>
-                          <cv:Val3>0</cv:Val3>
-                        </cv:FillValue>
-                      </Combinator>
-                    </Builder>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="cv:MaskPolygon">
+                      <cv:Regions>
+                        <cv:ArrayOfPoint>
+                          <cv:Point>
+                            <cv:X>72</cv:X>
+                            <cv:Y>57</cv:Y>
+                          </cv:Point>
+                          <cv:Point>
+                            <cv:X>72</cv:X>
+                            <cv:Y>57</cv:Y>
+                          </cv:Point>
+                          <cv:Point>
+                            <cv:X>72</cv:X>
+                            <cv:Y>57</cv:Y>
+                          </cv:Point>
+                          <cv:Point>
+                            <cv:X>72</cv:X>
+                            <cv:Y>57</cv:Y>
+                          </cv:Point>
+                        </cv:ArrayOfPoint>
+                        <cv:ArrayOfPoint>
+                          <cv:Point>
+                            <cv:X>376</cv:X>
+                            <cv:Y>420</cv:Y>
+                          </cv:Point>
+                          <cv:Point>
+                            <cv:X>376</cv:X>
+                            <cv:Y>420</cv:Y>
+                          </cv:Point>
+                          <cv:Point>
+                            <cv:X>376</cv:X>
+                            <cv:Y>421</cv:Y>
+                          </cv:Point>
+                          <cv:Point>
+                            <cv:X>376</cv:X>
+                            <cv:Y>421</cv:Y>
+                          </cv:Point>
+                        </cv:ArrayOfPoint>
+                        <cv:ArrayOfPoint>
+                          <cv:Point>
+                            <cv:X>452</cv:X>
+                            <cv:Y>1</cv:Y>
+                          </cv:Point>
+                          <cv:Point>
+                            <cv:X>0</cv:X>
+                            <cv:Y>1</cv:Y>
+                          </cv:Point>
+                          <cv:Point>
+                            <cv:X>0</cv:X>
+                            <cv:Y>467</cv:Y>
+                          </cv:Point>
+                          <cv:Point>
+                            <cv:X>452</cv:X>
+                            <cv:Y>467</cv:Y>
+                          </cv:Point>
+                        </cv:ArrayOfPoint>
+                        <cv:ArrayOfPoint>
+                          <cv:Point>
+                            <cv:X>460</cv:X>
+                            <cv:Y>213</cv:Y>
+                          </cv:Point>
+                          <cv:Point>
+                            <cv:X>461</cv:X>
+                            <cv:Y>213</cv:Y>
+                          </cv:Point>
+                          <cv:Point>
+                            <cv:X>461</cv:X>
+                            <cv:Y>213</cv:Y>
+                          </cv:Point>
+                          <cv:Point>
+                            <cv:X>460</cv:X>
+                            <cv:Y>213</cv:Y>
+                          </cv:Point>
+                        </cv:ArrayOfPoint>
+                        <cv:ArrayOfPoint>
+                          <cv:Point>
+                            <cv:X>466</cv:X>
+                            <cv:Y>399</cv:Y>
+                          </cv:Point>
+                          <cv:Point>
+                            <cv:X>452</cv:X>
+                            <cv:Y>399</cv:Y>
+                          </cv:Point>
+                          <cv:Point>
+                            <cv:X>452</cv:X>
+                            <cv:Y>0</cv:Y>
+                          </cv:Point>
+                          <cv:Point>
+                            <cv:X>466</cv:X>
+                            <cv:Y>0</cv:Y>
+                          </cv:Point>
+                        </cv:ArrayOfPoint>
+                        <cv:ArrayOfPoint>
+                          <cv:Point>
+                            <cv:X>452</cv:X>
+                            <cv:Y>436</cv:Y>
+                          </cv:Point>
+                          <cv:Point>
+                            <cv:X>467</cv:X>
+                            <cv:Y>436</cv:Y>
+                          </cv:Point>
+                          <cv:Point>
+                            <cv:X>467</cv:X>
+                            <cv:Y>467</cv:Y>
+                          </cv:Point>
+                          <cv:Point>
+                            <cv:X>452</cv:X>
+                            <cv:Y>467</cv:Y>
+                          </cv:Point>
+                        </cv:ArrayOfPoint>
+                      </cv:Regions>
+                      <cv:MaskType>ToZeroInv</cv:MaskType>
+                      <cv:FillValue>
+                        <cv:Val0>0</cv:Val0>
+                        <cv:Val1>0</cv:Val1>
+                        <cv:Val2>0</cv:Val2>
+                        <cv:Val3>0</cv:Val3>
+                      </cv:FillValue>
+                    </Combinator>
                   </Expression>
-                  <Expression xsi:type="Disable">
-                    <Builder xsi:type="Combinator">
-                      <Combinator xsi:type="cv:Threshold">
-                        <cv:ThresholdValue>20</cv:ThresholdValue>
-                        <cv:MaxValue>255</cv:MaxValue>
-                        <cv:ThresholdType>Binary</cv:ThresholdType>
-                      </Combinator>
-                    </Builder>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="cv:Threshold">
+                      <cv:ThresholdValue>10</cv:ThresholdValue>
+                      <cv:MaxValue>255</cv:MaxValue>
+                      <cv:ThresholdType>Binary</cv:ThresholdType>
+                    </Combinator>
                   </Expression>
-                  <Expression xsi:type="Disable">
-                    <Builder xsi:type="Combinator">
-                      <Combinator xsi:type="cv:FindContours">
-                        <cv:Mode>External</cv:Mode>
-                        <cv:Method>ChainApproxNone</cv:Method>
-                        <cv:Offset>
-                          <cv:X>0</cv:X>
-                          <cv:Y>0</cv:Y>
-                        </cv:Offset>
-                        <cv:MinArea>5</cv:MinArea>
-                        <cv:MaxArea>10000</cv:MaxArea>
-                      </Combinator>
-                    </Builder>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="cv:FindContours">
+                      <cv:Mode>External</cv:Mode>
+                      <cv:Method>ChainApproxNone</cv:Method>
+                      <cv:Offset>
+                        <cv:X>0</cv:X>
+                        <cv:Y>0</cv:Y>
+                      </cv:Offset>
+                      <cv:MinArea>5</cv:MinArea>
+                      <cv:MaxArea>10000</cv:MaxArea>
+                    </Combinator>
                   </Expression>
-                  <Expression xsi:type="Disable">
-                    <Builder xsi:type="Combinator">
-                      <Combinator xsi:type="cv:BinaryRegionAnalysis" />
-                    </Builder>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="cv:BinaryRegionAnalysis" />
                   </Expression>
-                  <Expression xsi:type="Disable">
-                    <Builder xsi:type="Combinator">
-                      <Combinator xsi:type="cv:LargestBinaryRegion" />
-                    </Builder>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="cv:LargestBinaryRegion" />
                   </Expression>
-                  <Expression xsi:type="Disable">
-                    <Builder xsi:type="MemberSelector">
-                      <Selector>Area</Selector>
-                    </Builder>
+                  <Expression xsi:type="MemberSelector">
+                    <Selector>Area</Selector>
                   </Expression>
-                  <Expression xsi:type="Disable">
-                    <Builder xsi:type="GreaterThan">
-                      <Operand xsi:type="DoubleProperty">
-                        <Value>0</Value>
-                      </Operand>
-                    </Builder>
+                  <Expression xsi:type="GreaterThan">
+                    <Operand xsi:type="DoubleProperty">
+                      <Value>0</Value>
+                    </Operand>
                   </Expression>
-                  <Expression xsi:type="Disable">
-                    <Builder xsi:type="scr:ExpressionTransform">
-                      <scr:Name>Rename Var</scr:Name>
-                      <scr:Expression>New(
+                  <Expression xsi:type="scr:ExpressionTransform">
+                    <scr:Name>Rename Var</scr:Name>
+                    <scr:Expression>New(
 it as GreenLED)</scr:Expression>
-                    </Builder>
                   </Expression>
-                  <Expression xsi:type="Disable">
-                    <Builder xsi:type="MemberSelector">
-                      <Selector>GreenLED</Selector>
-                    </Builder>
+                  <Expression xsi:type="MemberSelector">
+                    <Selector>GreenLED</Selector>
                   </Expression>
                   <Expression xsi:type="SubscribeSubject">
                     <Name>HighResCamera</Name>
@@ -893,7 +893,8 @@ it.Value.Item2 as Centroid,
 it.Value.Item3 as Head,
 it.Value.Item4 as Orientation,
 it.Timestamp as TimeTracking,
-it.Value.Item5 as TimeLowRes)</scr:Expression>
+it.Value.Item5 as TimeLowRes,
+it.Value.Item6 as GreenLED)</scr:Expression>
                   </Expression>
                   <Expression xsi:type="MemberSelector">
                     <Selector>Head.X</Selector>
@@ -1114,6 +1115,7 @@ it as Saccade)</scr:Expression>
                   <Edge From="24" To="25" Label="Source1" />
                   <Edge From="25" To="26" Label="Source1" />
                   <Edge From="26" To="27" Label="Source1" />
+                  <Edge From="27" To="35" Label="Source6" />
                   <Edge From="28" To="29" Label="Source1" />
                   <Edge From="29" To="30" Label="Source1" />
                   <Edge From="30" To="31" Label="Source2" />
