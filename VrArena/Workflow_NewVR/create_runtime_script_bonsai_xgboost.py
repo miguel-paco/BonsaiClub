@@ -109,7 +109,7 @@ def calculate_velocities(value):
 
     clf = xgb.XGBClassifier()
     booster = xgb.Booster()
-    booster.load_model('C:/Users/Admin/Desktop/xgboost_100epochs_just_vel_othersave_sac.h5')
+    booster.load_model('C:/Users/Concave VR/Documents/GitHub/BonsaiClub/VrArena/Workflow_NewVR/xgboost_100epochs_just_vel_othersave_sac.h5')
     clf._Booster = booster
     model = clf
     #model = xgb.XGBClassifier.load_model(fname = 'C:/Users/Admin/Desktop/xgboost_100epochs_just_vel_othersave_sac.h5')
