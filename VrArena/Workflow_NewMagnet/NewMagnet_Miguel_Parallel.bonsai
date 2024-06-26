@@ -188,7 +188,7 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="IntProperty">
-                <Value>1</Value>
+                <Value>3</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="PropertyMapping">
@@ -215,12 +215,12 @@
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="p2:CreateDiscreteUniform">
                 <p2:Lower>0</p2:Lower>
-                <p2:Upper>0</p2:Upper>
+                <p2:Upper>2</p2:Upper>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="p2:SampleDistinct">
-                <p2:Count>1</p2:Count>
+                <p2:Count>3</p2:Count>
               </Combinator>
             </Expression>
             <Expression xsi:type="rx:Condition">
@@ -334,7 +334,7 @@
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="rx:Take">
-          <rx:Count>1</rx:Count>
+          <rx:Count>3</rx:Count>
         </Combinator>
       </Expression>
       <Expression xsi:type="rx:CreateObservable">
@@ -371,7 +371,7 @@
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="FloatProperty">
-                      <Value>20</Value>
+                      <Value>40</Value>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="ExternalizedMapping">
@@ -379,7 +379,7 @@
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="FloatProperty">
-                      <Value>12.5</Value>
+                      <Value>6.25</Value>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="ExternalizedMapping">
@@ -387,7 +387,7 @@
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="FloatProperty">
-                      <Value>25</Value>
+                      <Value>50</Value>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="ExternalizedMapping">
@@ -403,7 +403,7 @@
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="BooleanProperty">
-                      <Value>false</Value>
+                      <Value>true</Value>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="ExternalizedMapping">
@@ -411,7 +411,7 @@
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="BooleanProperty">
-                      <Value>true</Value>
+                      <Value>false</Value>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="Combinator">
@@ -438,7 +438,7 @@
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="IntProperty">
-                      <Value>600</Value>
+                      <Value>300</Value>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="Combinator">
@@ -505,7 +505,7 @@ it.Item2.Item2 as GreenLEDSwitch)</scr:Expression>
                         </Expression>
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="StringProperty">
-                            <Value>20240605</Value>
+                            <Value>20240626</Value>
                           </Combinator>
                         </Expression>
                         <Expression xsi:type="SubscribeSubject">
@@ -521,7 +521,7 @@ it.Item2.Item2 as GreenLEDSwitch)</scr:Expression>
                         </Expression>
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="StringProperty">
-                            <Value>Parallel20mmsLED2Green3</Value>
+                            <Value>Parallel</Value>
                           </Combinator>
                         </Expression>
                         <Expression xsi:type="SubscribeSubject">
@@ -631,8 +631,8 @@ it.Item2.Item2 as GreenLEDSwitch)</scr:Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="cv:CropCenter">
                       <cv:Size>
-                        <cv:Width>320</cv:Width>
-                        <cv:Height>320</cv:Height>
+                        <cv:Width>380</cv:Width>
+                        <cv:Height>380</cv:Height>
                       </cv:Size>
                       <cv:FillValue>
                         <cv:Val0>0</cv:Val0>
@@ -963,6 +963,16 @@ it as Head)</scr:Expression>
                   </Expression>
                   <Expression xsi:type="Subtract">
                     <Operand xsi:type="IntProperty">
+                      <Value>190</Value>
+                    </Operand>
+                  </Expression>
+                  <Expression xsi:type="PropertyMapping">
+                    <PropertyMappings>
+                      <Property Name="Value" />
+                    </PropertyMappings>
+                  </Expression>
+                  <Expression xsi:type="Add">
+                    <Operand xsi:type="FloatProperty">
                       <Value>160</Value>
                     </Operand>
                   </Expression>
@@ -973,17 +983,7 @@ it as Head)</scr:Expression>
                   </Expression>
                   <Expression xsi:type="Add">
                     <Operand xsi:type="FloatProperty">
-                      <Value>190</Value>
-                    </Operand>
-                  </Expression>
-                  <Expression xsi:type="PropertyMapping">
-                    <PropertyMappings>
-                      <Property Name="Value" />
-                    </PropertyMappings>
-                  </Expression>
-                  <Expression xsi:type="Add">
-                    <Operand xsi:type="FloatProperty">
-                      <Value>190</Value>
+                      <Value>160</Value>
                     </Operand>
                   </Expression>
                   <Expression xsi:type="Combinator">
@@ -1228,7 +1228,7 @@ it as Frame)</scr:Expression>
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="FloatProperty">
-                      <Value>50958</Value>
+                      <Value>13859</Value>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="SubscribeSubject">
@@ -1802,7 +1802,7 @@ it.Timestamp as TimeProjection)</scr:Expression>
                           <Name>Fly</Name>
                         </Expression>
                         <Expression xsi:type="io:CsvWriter">
-                          <io:FileName>C:\Users\Utilizador\Desktop\20240605\Parallel20mmsLED2Green320mms_Fly_.csv</io:FileName>
+                          <io:FileName>C:\Users\Utilizador\Desktop\20240626\Parallel40mms_Fly_.csv</io:FileName>
                           <io:Append>false</io:Append>
                           <io:Overwrite>false</io:Overwrite>
                           <io:Suffix>FileCount</io:Suffix>
@@ -1847,7 +1847,7 @@ it.Timestamp as TimeProjection)</scr:Expression>
                           <Name>Command</Name>
                         </Expression>
                         <Expression xsi:type="io:CsvWriter">
-                          <io:FileName>C:\Users\Utilizador\Desktop\20240605\Parallel20mmsLED2Green320mms_Stim_.csv</io:FileName>
+                          <io:FileName>C:\Users\Utilizador\Desktop\20240626\Parallel40mms_Stim_.csv</io:FileName>
                           <io:Append>false</io:Append>
                           <io:Overwrite>false</io:Overwrite>
                           <io:Suffix>FileCount</io:Suffix>
@@ -1893,7 +1893,7 @@ it.Timestamp as TimeProjection)</scr:Expression>
                         </Expression>
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="cv:VideoWriter">
-                            <cv:FileName>C:\Users\Utilizador\Desktop\20240605\Parallel20mmsLED2Green320mms_CamL_.avi</cv:FileName>
+                            <cv:FileName>C:\Users\Utilizador\Desktop\20240626\Parallel40mms_CamL_.avi</cv:FileName>
                             <cv:Suffix>FileCount</cv:Suffix>
                             <cv:Buffered>true</cv:Buffered>
                             <cv:Overwrite>false</cv:Overwrite>
@@ -2096,7 +2096,7 @@ def process(value):
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="rx:Skip">
-                      <rx:Count>600</rx:Count>
+                      <rx:Count>300</rx:Count>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="Combinator">
