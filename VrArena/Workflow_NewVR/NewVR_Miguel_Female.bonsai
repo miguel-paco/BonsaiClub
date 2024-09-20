@@ -3,10 +3,10 @@
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision"
                  xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
+                 xmlns:p1="clr-namespace:Bonsai.uEye;assembly=Bonsai.uEye"
                  xmlns:gl="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders"
                  xmlns:res="clr-namespace:Bonsai.Resources;assembly=Bonsai.System"
                  xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System"
-                 xmlns:p1="clr-namespace:Bonsai.uEye;assembly=Bonsai.uEye"
                  xmlns:scr="clr-namespace:Bonsai.Scripting.Expressions;assembly=Bonsai.Scripting.Expressions"
                  xmlns:ipy="clr-namespace:Bonsai.Scripting.IronPython;assembly=Bonsai.Scripting.IronPython"
                  xmlns:p2="clr-namespace:;assembly=Extensions"
@@ -36,9 +36,47 @@
                 <Name>LowResCamera</Name>
               </Builder>
             </Expression>
+            <Expression xsi:type="ExternalizedMapping">
+              <Property Name="DeviceId" DisplayName="HighResCam" />
+              <Property Name="ConfigFile" DisplayName="HighResConfig" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="p1:uEyeCapture">
+                <p1:DeviceId>2</p1:DeviceId>
+                <p1:ConfigFile>C:\Users\ALBINO\Desktop\HighResCamParams.ini</p1:ConfigFile>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>Image</Selector>
+            </Expression>
+            <Expression xsi:type="rx:PublishSubject">
+              <Name>HighResCamera</Name>
+            </Expression>
+            <Expression xsi:type="ExternalizedMapping">
+              <Property Name="DeviceId" DisplayName="LowResCam" />
+              <Property Name="ConfigFile" DisplayName="LowResConfig" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="p1:uEyeCapture">
+                <p1:DeviceId>1</p1:DeviceId>
+                <p1:ConfigFile>C:\Users\ALBINO\Desktop\LowResCamParams.ini</p1:ConfigFile>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>Image</Selector>
+            </Expression>
+            <Expression xsi:type="rx:PublishSubject">
+              <Name>LowResCamera</Name>
+            </Expression>
           </Nodes>
           <Edges>
             <Edge From="0" To="1" Label="Source1" />
+            <Edge From="2" To="3" Label="Source1" />
+            <Edge From="3" To="4" Label="Source1" />
+            <Edge From="4" To="5" Label="Source1" />
+            <Edge From="6" To="7" Label="Source1" />
+            <Edge From="7" To="8" Label="Source1" />
+            <Edge From="8" To="9" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -61,7 +99,7 @@
                 <gl:Location xsi:nil="true" />
                 <gl:WindowBorder>Fixed</gl:WindowBorder>
                 <gl:WindowState>Normal</gl:WindowState>
-                <gl:DisplayDevice>First</gl:DisplayDevice>
+                <gl:DisplayDevice>Second</gl:DisplayDevice>
                 <gl:TargetRenderFrequency>60</gl:TargetRenderFrequency>
                 <gl:TargetUpdateFrequency>85</gl:TargetUpdateFrequency>
                 <gl:RenderState />
@@ -140,7 +178,7 @@
               <Property Name="FileName" DisplayName="PX2MM" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>C:\Users\Concave VR\Desktop\VRConversions\PX2MM.txt</io:FileName>
+              <io:FileName>C:\Users\ALBINO\Desktop\VRConversions\PX2MM.txt</io:FileName>
               <io:ListSeparator />
               <io:ScanPattern>%f,%f,%f</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
@@ -196,7 +234,7 @@
               <Property Name="FileName" DisplayName="MM2VL" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>C:\Users\Concave VR\Desktop\VRConversions\MM2VL.txt</io:FileName>
+              <io:FileName>C:\Users\ALBINO\Desktop\VRConversions\MM2VL.txt</io:FileName>
               <io:ListSeparator />
               <io:ScanPattern>%f,%f,%f</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
@@ -252,7 +290,7 @@
               <Property Name="FileName" DisplayName="MM2VR" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>C:\Users\Concave VR\Desktop\VRConversions\MM2VR.txt</io:FileName>
+              <io:FileName>C:\Users\ALBINO\Desktop\VRConversions\MM2VR.txt</io:FileName>
               <io:ListSeparator />
               <io:ScanPattern>%f,%f,%f</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
@@ -323,38 +361,6 @@
             <Edge From="16" To="17" Label="Source1" />
           </Edges>
         </Workflow>
-      </Expression>
-      <Expression xsi:type="ExternalizedMapping">
-        <Property Name="DeviceId" DisplayName="HighResCam" />
-        <Property Name="ConfigFile" DisplayName="HighResConfig" />
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="p1:uEyeCapture">
-          <p1:DeviceId>1</p1:DeviceId>
-          <p1:ConfigFile>C:\Users\Concave VR\Desktop\HighResCamParams.ini</p1:ConfigFile>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="MemberSelector">
-        <Selector>Image</Selector>
-      </Expression>
-      <Expression xsi:type="rx:PublishSubject">
-        <Name>HighResCamera</Name>
-      </Expression>
-      <Expression xsi:type="ExternalizedMapping">
-        <Property Name="DeviceId" DisplayName="LowResCam" />
-        <Property Name="ConfigFile" DisplayName="LowResConfig" />
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="p1:uEyeCapture">
-          <p1:DeviceId>2</p1:DeviceId>
-          <p1:ConfigFile>C:\Users\Concave VR\Desktop\LowResCamParams.ini</p1:ConfigFile>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="MemberSelector">
-        <Selector>Image</Selector>
-      </Expression>
-      <Expression xsi:type="rx:PublishSubject">
-        <Name>LowResCamera</Name>
       </Expression>
       <Expression xsi:type="rx:CreateObservable">
         <Name>Trial</Name>
@@ -436,7 +442,7 @@ it.Item3 as OffFrames)</scr:Expression>
                         </Expression>
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="StringProperty">
-                            <Value>C:\Users\Concave VR\Desktop</Value>
+                            <Value>C:\Users\ALBINO\Desktop</Value>
                           </Combinator>
                         </Expression>
                         <Expression xsi:type="Combinator">
@@ -464,7 +470,7 @@ it.Item3 as OffFrames)</scr:Expression>
                         </Expression>
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="StringProperty">
-                            <Value>20240614</Value>
+                            <Value>20240920</Value>
                           </Combinator>
                         </Expression>
                         <Expression xsi:type="SubscribeSubject">
@@ -562,7 +568,7 @@ it.Item3 as OffFrames)</scr:Expression>
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="cv:Threshold">
-                      <cv:ThresholdValue>100</cv:ThresholdValue>
+                      <cv:ThresholdValue>105</cv:ThresholdValue>
                       <cv:MaxValue>255</cv:MaxValue>
                       <cv:ThresholdType>BinaryInv</cv:ThresholdType>
                     </Combinator>
@@ -575,7 +581,7 @@ it.Item3 as OffFrames)</scr:Expression>
                         <cv:X>0</cv:X>
                         <cv:Y>0</cv:Y>
                       </cv:Offset>
-                      <cv:MinArea>2</cv:MinArea>
+                      <cv:MinArea>3</cv:MinArea>
                       <cv:MaxArea>2000</cv:MaxArea>
                     </Combinator>
                   </Expression>
@@ -1210,37 +1216,55 @@ def process(value):
                         <cv:ArrayOfPoint>
                           <cv:Point>
                             <cv:X>467</cv:X>
-                            <cv:Y>466</cv:Y>
+                            <cv:Y>467</cv:Y>
                           </cv:Point>
                           <cv:Point>
-                            <cv:X>452</cv:X>
-                            <cv:Y>466</cv:Y>
+                            <cv:X>453</cv:X>
+                            <cv:Y>467</cv:Y>
                           </cv:Point>
                           <cv:Point>
-                            <cv:X>452</cv:X>
-                            <cv:Y>311</cv:Y>
+                            <cv:X>453</cv:X>
+                            <cv:Y>412</cv:Y>
                           </cv:Point>
                           <cv:Point>
                             <cv:X>467</cv:X>
-                            <cv:Y>311</cv:Y>
+                            <cv:Y>412</cv:Y>
+                          </cv:Point>
+                        </cv:ArrayOfPoint>
+                        <cv:ArrayOfPoint>
+                          <cv:Point>
+                            <cv:X>459</cv:X>
+                            <cv:Y>232</cv:Y>
+                          </cv:Point>
+                          <cv:Point>
+                            <cv:X>460</cv:X>
+                            <cv:Y>232</cv:Y>
+                          </cv:Point>
+                          <cv:Point>
+                            <cv:X>460</cv:X>
+                            <cv:Y>232</cv:Y>
+                          </cv:Point>
+                          <cv:Point>
+                            <cv:X>459</cv:X>
+                            <cv:Y>232</cv:Y>
                           </cv:Point>
                         </cv:ArrayOfPoint>
                         <cv:ArrayOfPoint>
                           <cv:Point>
                             <cv:X>467</cv:X>
-                            <cv:Y>1</cv:Y>
+                            <cv:Y>0</cv:Y>
                           </cv:Point>
                           <cv:Point>
-                            <cv:X>452</cv:X>
-                            <cv:Y>1</cv:Y>
+                            <cv:X>453</cv:X>
+                            <cv:Y>0</cv:Y>
                           </cv:Point>
                           <cv:Point>
-                            <cv:X>452</cv:X>
-                            <cv:Y>232</cv:Y>
+                            <cv:X>453</cv:X>
+                            <cv:Y>322</cv:Y>
                           </cv:Point>
                           <cv:Point>
                             <cv:X>467</cv:X>
-                            <cv:Y>232</cv:Y>
+                            <cv:Y>322</cv:Y>
                           </cv:Point>
                         </cv:ArrayOfPoint>
                       </cv:Regions>
@@ -1255,7 +1279,7 @@ def process(value):
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="cv:Threshold">
-                      <cv:ThresholdValue>20</cv:ThresholdValue>
+                      <cv:ThresholdValue>3</cv:ThresholdValue>
                       <cv:MaxValue>255</cv:MaxValue>
                       <cv:ThresholdType>Binary</cv:ThresholdType>
                     </Combinator>
@@ -1313,7 +1337,7 @@ it as GreenLED)</scr:Expression>
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="FloatProperty">
-                      <Value>1</Value>
+                      <Value>79062</Value>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="Divide">
@@ -1501,7 +1525,7 @@ def process(value):
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="pal:SetFixedVoltage">
-                      <pal:PortName>COM4</pal:PortName>
+                      <pal:PortName>COM6</pal:PortName>
                       <pal:Channels>2</pal:Channels>
                     </Combinator>
                   </Expression>
@@ -1510,7 +1534,7 @@ def process(value):
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="pal:SetFixedVoltage">
-                      <pal:PortName>COM4</pal:PortName>
+                      <pal:PortName>COM6</pal:PortName>
                       <pal:Channels>1</pal:Channels>
                     </Combinator>
                   </Expression>
@@ -1644,7 +1668,7 @@ def process(value):
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="ard:DigitalOutput">
-                      <ard:PortName>COM3</ard:PortName>
+                      <ard:PortName>COM7</ard:PortName>
                       <ard:Pin>10</ard:Pin>
                     </Combinator>
                   </Expression>
@@ -1742,7 +1766,7 @@ it.Timestamp as TimeCommand)</scr:Expression>
                           <Combinator xsi:type="rx:TakeUntil" />
                         </Expression>
                         <Expression xsi:type="io:CsvWriter">
-                          <io:FileName>C:\Users\Concave VR\Desktop\test\FemaleConcave_Fly_.csv</io:FileName>
+                          <io:FileName>C:\Users\ALBINO\Desktop\20240919\FemaleConcave_Fly_.csv</io:FileName>
                           <io:Append>false</io:Append>
                           <io:Overwrite>false</io:Overwrite>
                           <io:Suffix>FileCount</io:Suffix>
@@ -1796,7 +1820,7 @@ it.Timestamp as TimeCommand)</scr:Expression>
                         </Expression>
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="cv:VideoWriter">
-                            <cv:FileName>C:\Users\Concave VR\Desktop\test\FemaleConcave_CamL_.avi</cv:FileName>
+                            <cv:FileName>C:\Users\ALBINO\Desktop\20240919\FemaleConcave_CamL_.avi</cv:FileName>
                             <cv:Suffix>FileCount</cv:Suffix>
                             <cv:Buffered>true</cv:Buffered>
                             <cv:Overwrite>false</cv:Overwrite>
@@ -1840,7 +1864,7 @@ it.Timestamp as TimeCommand)</scr:Expression>
                         </Expression>
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="cv:VideoWriter">
-                            <cv:FileName>C:\Users\Concave VR\Desktop\test\FemaleConcave_CamH_.avi</cv:FileName>
+                            <cv:FileName>C:\Users\ALBINO\Desktop\20240919\FemaleConcave_CamH_.avi</cv:FileName>
                             <cv:Suffix>FileCount</cv:Suffix>
                             <cv:Buffered>true</cv:Buffered>
                             <cv:Overwrite>false</cv:Overwrite>
@@ -1898,15 +1922,9 @@ it.Timestamp as TimeCommand)</scr:Expression>
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="ard:DigitalOutput">
-          <ard:PortName>COM3</ard:PortName>
+          <ard:PortName>COM7</ard:PortName>
           <ard:Pin>10</ard:Pin>
         </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="rx:TakeUntil" />
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="rx:TakeUntil" />
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="rx:Delay">
@@ -1918,19 +1936,9 @@ it.Timestamp as TimeCommand)</scr:Expression>
     <Edges>
       <Edge From="3" To="4" Label="Source1" />
       <Edge From="4" To="5" Label="Source1" />
+      <Edge From="4" To="7" Label="Source1" />
       <Edge From="5" To="6" Label="Source1" />
-      <Edge From="6" To="15" Label="Source1" />
       <Edge From="7" To="8" Label="Source1" />
-      <Edge From="8" To="9" Label="Source1" />
-      <Edge From="9" To="10" Label="Source1" />
-      <Edge From="10" To="16" Label="Source1" />
-      <Edge From="11" To="12" Label="Source1" />
-      <Edge From="12" To="13" Label="Source1" />
-      <Edge From="12" To="15" Label="Source2" />
-      <Edge From="12" To="16" Label="Source2" />
-      <Edge From="12" To="17" Label="Source1" />
-      <Edge From="13" To="14" Label="Source1" />
-      <Edge From="17" To="18" Label="Source1" />
     </Edges>
   </Workflow>
 </WorkflowBuilder>
