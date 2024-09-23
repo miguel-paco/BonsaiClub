@@ -102,7 +102,7 @@
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="pal:SetFixedVoltage">
-          <pal:PortName>COM4</pal:PortName>
+          <pal:PortName>COM6</pal:PortName>
           <pal:Channels>1</pal:Channels>
         </Combinator>
       </Expression>
@@ -185,7 +185,7 @@
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="pal:SetFixedVoltage">
-          <pal:PortName>COM4</pal:PortName>
+          <pal:PortName>COM6</pal:PortName>
           <pal:Channels>2</pal:Channels>
         </Combinator>
       </Expression>

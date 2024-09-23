@@ -41,7 +41,7 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="p1:uEyeCapture">
-                <p1:DeviceId>1</p1:DeviceId>
+                <p1:DeviceId>2</p1:DeviceId>
                 <p1:ConfigFile>C:\Users\ALBINO\Desktop\LowResCamParams.ini</p1:ConfigFile>
               </Combinator>
             </Expression>
@@ -57,7 +57,7 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="p1:uEyeCapture">
-                <p1:DeviceId>2</p1:DeviceId>
+                <p1:DeviceId>1</p1:DeviceId>
                 <p1:ConfigFile>C:\Users\ALBINO\Desktop\HighResCamParams.ini</p1:ConfigFile>
               </Combinator>
             </Expression>
@@ -492,7 +492,7 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Timer">
-                <rx:DueTime>PT1M30S</rx:DueTime>
+                <rx:DueTime>PT18M30S</rx:DueTime>
                 <rx:Period>PT0S</rx:Period>
               </Combinator>
             </Expression>
@@ -548,7 +548,7 @@
                         </Expression>
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="StringProperty">
-                            <Value>test</Value>
+                            <Value>20240920</Value>
                           </Combinator>
                         </Expression>
                         <Expression xsi:type="SubscribeSubject">
@@ -564,7 +564,7 @@
                         </Expression>
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="StringProperty">
-                            <Value>White</Value>
+                            <Value>Darkness</Value>
                           </Combinator>
                         </Expression>
                         <Expression xsi:type="Combinator">
@@ -923,6 +923,29 @@ it as Orientation)</scr:Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="rx:WithLatestFrom" />
                   </Expression>
+                  <Expression xsi:type="PropertyMapping">
+                    <PropertyMappings>
+                      <Property Name="Value" />
+                    </PropertyMappings>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="FloatProperty">
+                      <Value>1429</Value>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Divide">
+                    <Operand xsi:type="IntProperty">
+                      <Value>85</Value>
+                    </Operand>
+                  </Expression>
+                  <Expression xsi:type="scr:ExpressionTransform">
+                    <scr:Name>Rename Var</scr:Name>
+                    <scr:Expression>New(
+it as ElapsedTimeSec)</scr:Expression>
+                  </Expression>
+                  <Expression xsi:type="MemberSelector">
+                    <Selector>ElapsedTimeSec</Selector>
+                  </Expression>
                   <Expression xsi:type="MemberSelector">
                     <Selector>Timestamp</Selector>
                   </Expression>
@@ -950,13 +973,14 @@ it.Value.Item5 as TimeLowRes)</scr:Expression>
                 <Edges>
                   <Edge From="0" To="1" Label="Source1" />
                   <Edge From="1" To="2" Label="Source1" />
-                  <Edge From="1" To="27" Label="Source1" />
+                  <Edge From="1" To="32" Label="Source1" />
                   <Edge From="2" To="3" Label="Source1" />
                   <Edge From="2" To="6" Label="Source1" />
                   <Edge From="2" To="4" Label="Source1" />
                   <Edge From="3" To="21" Label="Source1" />
                   <Edge From="4" To="5" Label="Source1" />
                   <Edge From="5" To="6" Label="Source2" />
+                  <Edge From="5" To="27" Label="Source1" />
                   <Edge From="6" To="7" Label="Source1" />
                   <Edge From="6" To="26" Label="Source1" />
                   <Edge From="7" To="8" Label="Source1" />
@@ -972,23 +996,27 @@ it.Value.Item5 as TimeLowRes)</scr:Expression>
                   <Edge From="13" To="14" Label="Source1" />
                   <Edge From="14" To="15" Label="Source1" />
                   <Edge From="14" To="21" Label="Source3" />
-                  <Edge From="15" To="28" Label="Source3" />
+                  <Edge From="15" To="33" Label="Source3" />
                   <Edge From="15" To="17" Label="Source2" />
-                  <Edge From="16" To="28" Label="Source2" />
+                  <Edge From="16" To="33" Label="Source2" />
                   <Edge From="16" To="17" Label="Source1" />
                   <Edge From="17" To="18" Label="Source1" />
                   <Edge From="18" To="19" Label="Source1" />
                   <Edge From="19" To="20" Label="Source1" />
-                  <Edge From="20" To="28" Label="Source4" />
+                  <Edge From="20" To="33" Label="Source4" />
                   <Edge From="21" To="22" Label="Source1" />
                   <Edge From="23" To="24" Label="Source1" />
                   <Edge From="24" To="25" Label="Source1" />
                   <Edge From="25" To="26" Label="Source2" />
-                  <Edge From="26" To="28" Label="Source1" />
-                  <Edge From="27" To="28" Label="Source5" />
+                  <Edge From="26" To="33" Label="Source1" />
+                  <Edge From="27" To="28" Label="Source1" />
                   <Edge From="28" To="29" Label="Source1" />
                   <Edge From="29" To="30" Label="Source1" />
                   <Edge From="30" To="31" Label="Source1" />
+                  <Edge From="32" To="33" Label="Source5" />
+                  <Edge From="33" To="34" Label="Source1" />
+                  <Edge From="34" To="35" Label="Source1" />
+                  <Edge From="35" To="36" Label="Source1" />
                 </Edges>
               </Workflow>
             </Expression>
@@ -1243,13 +1271,13 @@ def process(value):
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="ipy:PythonTransform">
-                    <ipy:Name>PhotodiodeFlash</ipy:Name>
+                    <ipy:Name>ExtentCalculation</ipy:Name>
                     <ipy:Script>@returns(int)
 def process(value):
     #Load Global Variables
 
     if value is True:
-      var = 2
+      var = 2 * 1.5340
     else:
       var = 0
    
@@ -1265,13 +1293,78 @@ def process(value):
                       <Property Name="ExtentY" />
                     </PropertyMappings>
                   </Expression>
-                  <Expression xsi:type="MemberSelector">
-                    <Selector>Ori</Selector>
+                  <Expression xsi:type="ExternalizedMapping">
+                    <Property Name="TextureName" />
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="FloatProperty">
+                      <Value>0</Value>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="PropertyMapping">
+                    <PropertyMappings>
+                      <Property Name="LocationX" />
+                    </PropertyMappings>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="FloatProperty">
+                      <Value>0</Value>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="PropertyMapping">
+                    <PropertyMappings>
+                      <Property Name="LocationY" />
+                    </PropertyMappings>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="FloatProperty">
+                      <Value>0</Value>
+                    </Combinator>
                   </Expression>
                   <Expression xsi:type="PropertyMapping">
                     <PropertyMappings>
                       <Property Name="Angle" />
                     </PropertyMappings>
+                  </Expression>
+                  <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.DrawImage.bonsai">
+                    <Angle>0</Angle>
+                    <TextureName>10d-01</TextureName>
+                    <ExtentX>3</ExtentX>
+                    <ExtentY>3</ExtentY>
+                    <LocationX>0</LocationX>
+                    <LocationY>0</LocationY>
+                    <Layer>-1</Layer>
+                    <ScaleX>1</ScaleX>
+                    <ScaleY>1</ScaleY>
+                    <ShiftX>0</ShiftX>
+                    <ShiftY>0</ShiftY>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="rx:Zip" />
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="rx:Timestamp" />
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="rx:WithLatestFrom" />
+                  </Expression>
+                  <Expression xsi:type="scr:ExpressionTransform">
+                    <scr:Name>Rename Var</scr:Name>
+                    <scr:Expression>New(
+it.Item1.Value.Item1.LowResFrame as LowResFrame,
+it.Item1.Value.Item1.X as X,
+it.Item1.Value.Item1.Y as Y,
+it.Item1.Value.Item1.Ori as Orientation,
+it.Item1.Value.Item3 as PhotoState,
+it.Item2 as PhotoValue,
+it.Item1.Timestamp as TimeProjection,
+it.Item1.Value.Item1.TimeDraw as TimeDraw)</scr:Expression>
+                  </Expression>
+                  <Expression xsi:type="rx:BehaviorSubject">
+                    <Name>Projection</Name>
+                  </Expression>
+                  <Expression xsi:type="MemberSelector">
+                    <Selector>Ori</Selector>
                   </Expression>
                   <Expression xsi:type="GroupWorkflow">
                     <Name>ConvertToProjectionUnits</Name>
@@ -1336,95 +1429,109 @@ def process(value):
                   <Expression xsi:type="MemberSelector">
                     <Selector>X</Selector>
                   </Expression>
-                  <Expression xsi:type="PropertyMapping">
-                    <PropertyMappings>
-                      <Property Name="LocationX" />
-                    </PropertyMappings>
-                  </Expression>
                   <Expression xsi:type="MemberSelector">
                     <Selector>Y</Selector>
                   </Expression>
-                  <Expression xsi:type="PropertyMapping">
-                    <PropertyMappings>
-                      <Property Name="LocationY" />
-                    </PropertyMappings>
+                  <Expression xsi:type="Disable">
+                    <Builder xsi:type="Combinator">
+                      <Combinator xsi:type="FloatProperty">
+                        <Value>0</Value>
+                      </Combinator>
+                    </Builder>
                   </Expression>
-                  <Expression xsi:type="ExternalizedMapping">
-                    <Property Name="TextureName" />
+                  <Expression xsi:type="Disable">
+                    <Builder xsi:type="Combinator">
+                      <Combinator xsi:type="FloatProperty">
+                        <Value>0</Value>
+                      </Combinator>
+                    </Builder>
                   </Expression>
-                  <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.DrawImage.bonsai">
-                    <Angle>2318.47217</Angle>
-                    <TextureName>1d-01</TextureName>
-                    <ExtentX>2</ExtentX>
-                    <ExtentY>2</ExtentY>
-                    <LocationX>-0.00140857161</LocationX>
-                    <LocationY>0.3090661</LocationY>
-                    <Layer>-1</Layer>
-                    <ScaleX>1</ScaleX>
-                    <ScaleY>1</ScaleY>
-                    <ShiftX>0</ShiftX>
-                    <ShiftY>0</ShiftY>
+                  <Expression xsi:type="Disable">
+                    <Builder xsi:type="Combinator">
+                      <Combinator xsi:type="rx:Zip" />
+                    </Builder>
                   </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="rx:Zip" />
+                  <Expression xsi:type="Disable">
+                    <Builder xsi:type="SubscribeSubject">
+                      <Name>MM2VR</Name>
+                    </Builder>
                   </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="rx:Timestamp" />
+                  <Expression xsi:type="Disable">
+                    <Builder xsi:type="Combinator">
+                      <Combinator xsi:type="rx:WithLatestFrom" />
+                    </Builder>
                   </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="rx:WithLatestFrom" />
+                  <Expression xsi:type="Disable">
+                    <Builder xsi:type="Combinator">
+                      <Combinator xsi:type="p2:UnitTransform" />
+                    </Builder>
                   </Expression>
-                  <Expression xsi:type="scr:ExpressionTransform">
-                    <scr:Name>Rename Var</scr:Name>
-                    <scr:Expression>New(
-it.Item1.Value.Item1.LowResFrame as LowResFrame,
-it.Item1.Value.Item1.X as X,
-it.Item1.Value.Item1.Y as Y,
-it.Item1.Value.Item1.Ori as Orientation,
-it.Item1.Value.Item3 as PhotoState,
-it.Item2 as PhotoValue,
-it.Item1.Timestamp as TimeProjection,
-it.Item1.Value.Item1.TimeDraw as TimeDraw)</scr:Expression>
+                  <Expression xsi:type="Disable">
+                    <Builder xsi:type="ipy:PythonTransform">
+                      <ipy:Name>ConvertToPoint2f</ipy:Name>
+                      <ipy:Script>import clr
+clr.AddReference("OpenCV.Net")
+from OpenCV.Net import Point2f
+
+@returns(Point2f)
+def process(value):
+  return Point2f(value.Item1,value.Item2)</ipy:Script>
+                    </Builder>
                   </Expression>
-                  <Expression xsi:type="rx:BehaviorSubject">
-                    <Name>Projection</Name>
+                  <Expression xsi:type="Disable">
+                    <Builder xsi:type="MemberSelector">
+                      <Selector>X</Selector>
+                    </Builder>
+                  </Expression>
+                  <Expression xsi:type="Disable">
+                    <Builder xsi:type="MemberSelector">
+                      <Selector>Y</Selector>
+                    </Builder>
                   </Expression>
                 </Nodes>
                 <Edges>
                   <Edge From="0" To="1" Label="Source1" />
-                  <Edge From="0" To="21" Label="Source1" />
+                  <Edge From="0" To="20" Label="Source1" />
                   <Edge From="0" To="8" Label="Source1" />
-                  <Edge From="0" To="12" Label="Source1" />
-                  <Edge From="0" To="14" Label="Source1" />
+                  <Edge From="0" To="25" Label="Source1" />
+                  <Edge From="0" To="26" Label="Source1" />
                   <Edge From="1" To="2" Label="Source1" />
                   <Edge From="1" To="5" Label="Source1" />
-                  <Edge From="1" To="20" Label="Source1" />
+                  <Edge From="1" To="19" Label="Source1" />
                   <Edge From="2" To="3" Label="Source1" />
                   <Edge From="3" To="4" Label="Source1" />
-                  <Edge From="3" To="21" Label="Source3" />
+                  <Edge From="3" To="20" Label="Source3" />
                   <Edge From="4" To="5" Label="Source2" />
-                  <Edge From="5" To="21" Label="Source2" />
-                  <Edge From="6" To="23" Label="Source2" />
+                  <Edge From="5" To="20" Label="Source2" />
+                  <Edge From="6" To="22" Label="Source2" />
                   <Edge From="7" To="8" Label="Source2" />
                   <Edge From="8" To="9" Label="Source1" />
                   <Edge From="9" To="10" Label="Source1" />
                   <Edge From="9" To="11" Label="Source1" />
-                  <Edge From="10" To="20" Label="Source5" />
-                  <Edge From="11" To="20" Label="Source6" />
-                  <Edge From="12" To="13" Label="Source1" />
-                  <Edge From="13" To="20" Label="Source4" />
-                  <Edge From="14" To="15" Label="Source1" />
-                  <Edge From="14" To="17" Label="Source1" />
+                  <Edge From="10" To="19" Label="Source5" />
+                  <Edge From="11" To="19" Label="Source6" />
+                  <Edge From="12" To="19" Label="Source7" />
+                  <Edge From="13" To="14" Label="Source1" />
+                  <Edge From="14" To="19" Label="Source2" />
                   <Edge From="15" To="16" Label="Source1" />
-                  <Edge From="16" To="20" Label="Source2" />
+                  <Edge From="16" To="19" Label="Source3" />
                   <Edge From="17" To="18" Label="Source1" />
-                  <Edge From="18" To="20" Label="Source3" />
-                  <Edge From="19" To="20" Label="Source7" />
-                  <Edge From="20" To="21" Label="Source4" />
+                  <Edge From="18" To="19" Label="Source4" />
+                  <Edge From="19" To="20" Label="Source4" />
+                  <Edge From="20" To="21" Label="Source1" />
                   <Edge From="21" To="22" Label="Source1" />
                   <Edge From="22" To="23" Label="Source1" />
                   <Edge From="23" To="24" Label="Source1" />
-                  <Edge From="24" To="25" Label="Source1" />
+                  <Edge From="26" To="27" Label="Source1" />
+                  <Edge From="26" To="28" Label="Source1" />
+                  <Edge From="29" To="31" Label="Source1" />
+                  <Edge From="30" To="31" Label="Source2" />
+                  <Edge From="31" To="33" Label="Source1" />
+                  <Edge From="32" To="33" Label="Source2" />
+                  <Edge From="33" To="34" Label="Source1" />
+                  <Edge From="34" To="35" Label="Source1" />
+                  <Edge From="35" To="36" Label="Source1" />
+                  <Edge From="35" To="37" Label="Source1" />
                 </Edges>
               </Workflow>
             </Expression>
@@ -1460,7 +1567,7 @@ it.Item1.Value.Item1.TimeDraw as TimeDraw)</scr:Expression>
                           <Name>Fly</Name>
                         </Expression>
                         <Expression xsi:type="io:CsvWriter">
-                          <io:FileName>C:\Users\ALBINO\Desktop\test\White_Fly_.csv</io:FileName>
+                          <io:FileName>C:\Users\ALBINO\Desktop\20240920\Darkness_Fly_.csv</io:FileName>
                           <io:Append>false</io:Append>
                           <io:Overwrite>false</io:Overwrite>
                           <io:Suffix>FileCount</io:Suffix>
@@ -1505,7 +1612,7 @@ it.Item1.Value.Item1.TimeDraw as TimeDraw)</scr:Expression>
                           <Name>Projection</Name>
                         </Expression>
                         <Expression xsi:type="io:CsvWriter">
-                          <io:FileName>C:\Users\ALBINO\Desktop\test\White_Stim_.csv</io:FileName>
+                          <io:FileName>C:\Users\ALBINO\Desktop\20240920\Darkness_Stim_.csv</io:FileName>
                           <io:Append>false</io:Append>
                           <io:Overwrite>false</io:Overwrite>
                           <io:Suffix>FileCount</io:Suffix>
@@ -1551,12 +1658,12 @@ it.Item1.Value.Item1.TimeDraw as TimeDraw)</scr:Expression>
                         </Expression>
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="cv:VideoWriter">
-                            <cv:FileName>C:\Users\ALBINO\Desktop\test\White_CamL_.avi</cv:FileName>
+                            <cv:FileName>C:\Users\ALBINO\Desktop\20240920\Darkness_CamL_.avi</cv:FileName>
                             <cv:Suffix>FileCount</cv:Suffix>
                             <cv:Buffered>true</cv:Buffered>
                             <cv:Overwrite>false</cv:Overwrite>
                             <cv:FourCC>FMP4</cv:FourCC>
-                            <cv:FrameRate>85</cv:FrameRate>
+                            <cv:FrameRate>60</cv:FrameRate>
                             <cv:FrameSize>
                               <cv:Width>0</cv:Width>
                               <cv:Height>0</cv:Height>
@@ -1589,12 +1696,12 @@ it.Item1.Value.Item1.TimeDraw as TimeDraw)</scr:Expression>
                         </Expression>
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="cv:VideoWriter">
-                            <cv:FileName>C:\Users\ALBINO\Desktop\test\White_CamH_.avi</cv:FileName>
+                            <cv:FileName>C:\Users\ALBINO\Desktop\20240920\Darkness_CamH_.avi</cv:FileName>
                             <cv:Suffix>FileCount</cv:Suffix>
                             <cv:Buffered>true</cv:Buffered>
                             <cv:Overwrite>false</cv:Overwrite>
                             <cv:FourCC>FMP4</cv:FourCC>
-                            <cv:FrameRate>85</cv:FrameRate>
+                            <cv:FrameRate>120</cv:FrameRate>
                             <cv:FrameSize>
                               <cv:Width>0</cv:Width>
                               <cv:Height>0</cv:Height>
